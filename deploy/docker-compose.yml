@@ -1,0 +1,21 @@
+version: '2'
+services:
+  woozy_website:
+    image: woozy_web
+    container_name: woozy_web
+    restart: always
+    build:
+      context: ..
+    environment:
+      - MONGO_HOSTNAME=woozy_db
+    ports:
+      - 3000:3000
+    volumes:
+      - ..:/usr/src/app
+    command: sh -c 'yarn install && nodemon app.js'
+    links:
+      - woozy_db
+  woozy_db:
+    image: mongo
+    container_name: woozy_db
+    restart: always
