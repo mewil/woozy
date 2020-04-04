@@ -66,7 +66,7 @@ const Header = () =>
     h(Helmet, [h('title', 'Woozy')]),
     h(Wrapper, [
       h(HeaderNavLink, { to: routes.HOME }, 'Woozy'),
-      h(NavContainer, [h(StyledNavLink, { to: routes.SIGNIN }, 'Sign In')]),
+      h(NavContainer, [h(StyledNavLink, { to: routes.SIGNIN }, '')]),
     ]),
   ]);
 

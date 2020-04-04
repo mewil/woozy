@@ -105,10 +105,7 @@ if (app.get('env') !== 'production' && !config.api_work) {
     });
 }
 
-// Now we start the server
-if (config.start_server) {
-    server.listen(config.server_port);
-}
+server.listen(config.server_port);
 
 module.exports = {
     mongoose,

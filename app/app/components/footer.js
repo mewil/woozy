@@ -14,4 +14,4 @@ const Text = styled.p`
 `;
 
 export const Footer = () =>
-  h(Container, [h(Text, [`© ${new Date().getFullYear()} Michael Wilson`])]);
+  h(Container, [h(Text, [`© ${new Date().getFullYear()}`])]);
