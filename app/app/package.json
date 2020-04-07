@@ -10,6 +10,7 @@
   "license": "GPL-3.0",
   "dependencies": {
     "@woozy/theme": "1.0.0",
-    "@woozy/home": "1.0.0"
+    "@woozy/home": "1.0.0",
+    "@woozy/settings": "1.0.0"
   }
 }
