@@ -3,9 +3,9 @@ import { div } from 'react-hyperscript-helpers';
 // import { connect } from "react-redux";
 
 export class LoginPage extends Component {
-    render() {
-        return div('login');
-    }
+  render() {
+    return div('login');
+  }
 }
 
 // import { Component } from "react";
