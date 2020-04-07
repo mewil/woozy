@@ -11,6 +11,13 @@
   "dependencies": {
     "@woozy/theme": "1.0.0",
     "@woozy/home": "1.0.0",
-    "@woozy/settings": "1.0.0"
+<<<<<<< HEAD
+    "@woozy/settings": "1.0.0",
+    "@woozy/friend-setup": "1.0.0",
+    "@woozy/schedule-setup": "1.0.0"
+=======
+    "@woozy/friends": "1.0.0",
+    "@woozy/schedule": "1.0.0"
+>>>>>>> schedule and friends slightly finished
   }
 }
