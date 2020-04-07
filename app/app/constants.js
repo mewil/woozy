@@ -3,4 +3,7 @@ export const routes = {
   NEW: '/new',
   SIGNIN: '/signin',
   SETTINGS: '/settings',
+  SETUP: '/setup',
+  SCHEDULE: '/schedule-setup',
+  FRIENDS: '/friend-setup'
 };

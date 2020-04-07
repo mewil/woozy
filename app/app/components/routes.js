@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router';
 
 import { routes } from '../constants';
 import { HomePageConn } from '@woozy/home';
-import { SettingPage } from '@woozy/settings';
+import { SettingPage, SetupPage, SchedulePage, FriendsPage } from '@woozy/settings';
 
 export const Routes = () =>
   h(Switch, [
@@ -16,6 +16,21 @@ export const Routes = () =>
       exact: true,
       path: routes.SETTINGS,
       component: SettingPage,
+    }),
+    h(Route, {
+      exact: true,
+      path: routes.SETUP,
+      component: SetupPage,
+    }),
+    h(Route, {
+      exact: true,
+      path: routes.SCHEDULE,
+      component: SchedulePage,
+    }),
+    h(Route, {
+      exact: true,
+      path: routes.FRIENDS,
+      component: FriendsPage,
     }),
     h(Route, { component: HomePageConn }),
   ]);
