@@ -26,13 +26,13 @@ const SaveButton = styled(Container)`
 
 export class SettingPage extends Component {
   render() {
-    return h(OuterContainer,
-         [h(Container,"Choose your Friends"),
-         h(Container,"Choose people to avoid"),
-         h(Container,"When will you be going out?"),
-         h(SaveButton, "Save Settings")]);
+    return h(OuterContainer, [
+      h(Container, 'Choose your Friends'),
+      h(Container, 'Choose people to avoid'),
+      h(Container, 'When will you be going out?'),
+      h(SaveButton, 'Save Settings'),
+    ]);
   }
 }
-
 
 export default SettingPage;
