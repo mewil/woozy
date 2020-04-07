@@ -7,4 +7,4 @@ const userSchema = new Schema({
     avoiding_id: [String]
 });
 
-var User = mongoose.model('User', yourSchema);
+mongoose.model('User', userSchema);
