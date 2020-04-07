@@ -66,10 +66,17 @@ const Header = () =>
     h(Helmet, [h('title', 'Woozy')]),
     h(Wrapper, [
       h(HeaderNavLink, { to: routes.HOME }, 'Woozy'),
+<<<<<<< HEAD
       h(NavContainer, [
         h(StyledNavLink, { to: routes.SIGNIN }, 'Signin'),
         h(StyledNavLink, { to: routes.SETTINGS }, 'Settings'),
+        h(StyledNavLink, { to: routes.SETUP }, 'Setup')]),
+        h(StyledNavLink, { to: routes.SCHEDULE }, 'Schedule'),
+        h(StyledNavLink, { to: routes.FRIENDS }, 'Friends'),
       ]),
+=======
+      h(NavContainer, [h(StyledNavLink, { to: routes.SIGNIN }, 'Signin'),h(StyledNavLink, { to: routes.SCHEDULE }, 'Schedule'),h(StyledNavLink, { to: routes.FRIENDS }, 'Friends')]),
+>>>>>>> schedule and friends slightly finished
     ]),
   ]);
 
