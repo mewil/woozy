@@ -1,6 +1,10 @@
 import { Component } from 'react';
 import { h } from 'react-hyperscript-helpers';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
+import { theme } from '@woozy/theme';
+import { routes } from '../../app/constants';
+import { React } from 'react';
 
 const OuterContainer = styled.div`
   display: flex;
@@ -41,17 +45,26 @@ const SmallHeader = styled.h4`
 const Container = styled.button`
   display: flex;
   margin: 20px;
-  width: 350px;
-  flex-direction: row;
-  padding: 50px;
+  width: 200px;
+  flex-direction: column;
+  background-color: ${({ theme }) => theme.success};
+  padding: 10px;
   align-items: center;
+  height: 40px;
 `;
 
-const SaveButton = styled(Container)`
-  width: 200px;
-  background-color: green;
-  padding: 10px;
-  height: 40px;
+const StyledNavLink = styled(NavLink)`
+  color: ${({ theme }) => theme.primary};
+  font-size: 16px;
+  padding: 2px 20px;
+  margin: 10px 0 10px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: all 0.3s;
+  &:first-child {
+    margin: 0;
+    margin-left: 15px;
+  }
 `;
 
 export class SchedulePage extends Component {
@@ -156,7 +169,7 @@ export class SchedulePage extends Component {
         ]),
         h(Select, [h(Option, 'am'), h(Option, 'pm')]),
       ]),
-      h(SaveButton, 'Done'),
+      h(StyledNavLink, {to: routes.SETTINGS},[h(Container, 'Save Settings')]),
     ]);
   }
 }
