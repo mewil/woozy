@@ -1,10 +1,7 @@
 import { Component } from 'react';
-import { h, div, li, ul } from 'react-hyperscript-helpers';
+import { h } from 'react-hyperscript-helpers';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { Subtitle, Body, BodyFaded, TextFaded } from 'app/ui/typography.js';
-import { Input } from 'app/ui/input.js';
-import { Button } from 'app/ui/button.js';
 import { Contact } from './contact';
 import { Conversation } from './conversation';
 
@@ -40,16 +37,16 @@ const CenterContainer = styled.div`
 const conversationList = [
   {
     contactId: 1,
-    contactName: "Shameek Ray",
-    lastMessage: "Woozy is a great app",
-    lastMessageTimestamp: "1021"
+    contactName: 'Shameek Ray',
+    lastMessage: 'Woozy is a great app',
+    lastMessageTimestamp: '1021',
   },
   {
     contactId: 2,
-    contactName: "Michael Wilson",
-    lastMessage: "Use hyperscript",
-    lastMessageTimestamp: "1033"
-  }
+    contactName: 'Michael Wilson',
+    lastMessage: 'Use hyperscript',
+    lastMessageTimestamp: '1033',
+  },
 ];
 
 export class HomePage extends Component {
@@ -57,21 +54,17 @@ export class HomePage extends Component {
     const { fetchConversations } = this.props;
     fetchConversations();
   }
-  
+
   render() {
-    return(
-      h(GlobalContainer, [
-        h(LeftContainer, conversationList.map(
-          convo => h(Contact, convo)
-        )),
-        h(CenterContainer, [
-          h(Conversation)
-        ])    
-      ]
-    ));
+    return h(GlobalContainer, [
+      h(
+        LeftContainer,
+        conversationList.map((convo) => h(Contact, convo)),
+      ),
+      h(CenterContainer, [h(Conversation)]),
+    ]);
   }
 }
-
 
 const mapStateToProps = (state) => ({
   conversations: getConversations(state),
