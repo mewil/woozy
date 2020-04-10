@@ -19,7 +19,7 @@ const Container = styled.button`
 
 const SaveButton = styled(Container)`
   width: 200px;
-  background-color: green;
+  background-color: ${({ theme }) => theme.success};
   padding: 10px;
   height: 40px;
 `;
