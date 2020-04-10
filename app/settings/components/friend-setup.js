@@ -121,3 +121,6 @@ const mapStateToProps = (state) => ({
 export const FriendPageConn = connect(mapStateToProps)(FriendsPage);
 
 export const BlockedPageConn = connect(mapStateToProps)(BlockedPage);
+    ]);
+  }
+}

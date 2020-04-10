@@ -6,7 +6,6 @@ import { NavLink } from 'react-router-dom';
 // import { theme } from '@woozy/theme';
 import { routes } from '../../app/constants';
 
-import { theme } from '@woozy/theme';
 
 const OuterContainer = styled.div`
   display: flex;
@@ -47,6 +46,7 @@ const StyledNavLink = styled(NavLink)`
 export class SettingPage extends Component {
   render() {
     return h(OuterContainer, [
+<<<<<<< HEAD
       h(StyledNavLink, { to: routes.FRIENDS }, [
         h(Container, 'Choose your Friends'),
       ]),
@@ -57,6 +57,15 @@ export class SettingPage extends Component {
         h(Container, 'When will you be going out?'),
       ]),
       h(SaveButton, 'Save Settings'),
+=======
+      h(StyledNavLink, {to: routes.FRIENDS},
+          [h(Container, 'Choose your Friends')]),
+      h(StyledNavLink, {to: routes.BLOCKED},
+          [h(Container, 'Choose people to avoid')]),
+      h(StyledNavLink, {to: routes.SCHEDULE},[
+          h(Container, 'When will you be going out?')]),
+      h(SaveButton, 'Save Settings')
+>>>>>>> Combined settings screens together
     ]);
   }
 }
