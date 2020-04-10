@@ -6,5 +6,5 @@ export const routes = {
   SETUP: '/setup',
   SCHEDULE: '/schedule-setup',
   FRIENDS: '/friend-setup',
-  BLOCKED: '/blocked-setup'
+  BLOCKED: '/blocked-setup',
 };
