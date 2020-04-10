@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { h } from 'react-hyperscript-helpers';
 import styled from 'styled-components';
 
-import {theme} from '@woozy/theme';
+import { theme } from '@woozy/theme';
 
 const OuterContainer = styled.div`
   display: flex;
@@ -24,7 +24,6 @@ const SaveButton = styled(Container)`
   background-color: ${({ theme }) => theme.success};
   padding: 10px;
   height: 40px;
-
 `;
 
 export class SettingPage extends Component {
