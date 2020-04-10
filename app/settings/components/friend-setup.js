@@ -91,11 +91,8 @@ export class FriendsPage extends Component {
         h(Rows, [h(ContactName, 'Shameek'), h(FriendButton, 'Add')]),
         h(Rows, [h(ContactName, 'Rosie'), h(FriendButton, 'Add')]),
       ]),
-<<<<<<< HEAD
-      h(StyledNavLink, { to: routes.SETTINGS }, [h(Container, 'Done')]),
-=======
-      h(StyledNavLink, {to: routes.SETTINGS},[h(Container, 'Save Settings')]),
->>>>>>> Combined settings screens together
+
+      h(StyledNavLink, { to: routes.SETTINGS }, [h(Container, 'Done')]),xs
     ]);
   }
 }
@@ -112,11 +109,7 @@ export class BlockedPage extends Component {
         h(Rows, [h(ContactName, 'Shameek'), h(FriendButton, 'Add')]),
         h(Rows, [h(ContactName, 'Rosie'), h(FriendButton, 'Add')]),
       ]),
-<<<<<<< HEAD
       h(StyledNavLink, { to: routes.SETTINGS }, [h(Container, 'Done')]),
-=======
-      h(StyledNavLink, {to: routes.SETTINGS},[h(Container, 'Save Settings')]),
->>>>>>> Combined settings screens together
     ]);
   }
 }
