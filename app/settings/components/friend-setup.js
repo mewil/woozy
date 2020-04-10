@@ -92,7 +92,7 @@ export class FriendsPage extends Component {
         h(Rows, [h(ContactName, 'Rosie'), h(FriendButton, 'Add')]),
       ]),
 
-      h(StyledNavLink, { to: routes.SETTINGS }, [h(Container, 'Done')]),xs
+      h(StyledNavLink, { to: routes.SETTINGS }, [h(Container, 'Done')]),
     ]);
   }
 }
