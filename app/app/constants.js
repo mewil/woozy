@@ -5,5 +5,5 @@ export const routes = {
   SETTINGS: '/settings',
   SETUP: '/setup',
   SCHEDULE: '/schedule-setup',
-  FRIENDS: '/friend-setup'
+  FRIENDS: '/friend-setup',
 };

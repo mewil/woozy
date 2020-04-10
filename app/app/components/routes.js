@@ -3,7 +3,12 @@ import { Route, Switch } from 'react-router';
 
 import { routes } from '../constants';
 import { HomePageConn } from '@woozy/home';
-import { SettingPage, SetupPage, SchedulePage, FriendsPage } from '@woozy/settings';
+import {
+  SettingPage,
+  SetupPage,
+  SchedulePage,
+  FriendsPage,
+} from '@woozy/settings';
 
 export const Routes = () =>
   h(Switch, [

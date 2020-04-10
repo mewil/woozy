@@ -34,5 +34,3 @@ export class SettingPage extends Component {
     ]);
   }
 }
-
-export default SettingPage;
