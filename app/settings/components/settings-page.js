@@ -7,8 +7,6 @@ import { NavLink } from 'react-router-dom';
 import { routes } from '../../app/constants';
 
 
-import { theme } from '@woozy/theme';
-
 const OuterContainer = styled.div`
   display: flex;
   flex-direction: column;
