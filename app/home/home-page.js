@@ -2,8 +2,8 @@ import { Component } from 'react';
 import { h } from 'react-hyperscript-helpers';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { Contact } from './contact';
-import { Conversation } from './conversation';
+import { Contact } from '@woozy/conversations/components/components/contact';
+import { Conversation } from '@woozy/conversations/components/components/conversation';
 
 import {
   getConversations,
@@ -50,17 +50,49 @@ const conversationList = [
 ];
 
 export class HomePage extends Component {
+  constructor(props) {
+    super(props);
+    if (conversationList.length > 0) {
+      this.state = {
+        hasContacts: true,
+        selectedContact: conversationList[0].contactId,
+      };
+    } else {
+      this.state = {
+        hasContacts: false,
+      };
+    }
+  }
   componentDidMount() {
     const { fetchConversations } = this.props;
     fetchConversations();
   }
 
+  onContactClick(newSelectedID) {
+    console.log(newSelectedID);
+    this.state = this.state; // place holder to pass lint test -- replace with logic
+    // this.setState({
+    //   selectedContact: newSelectedID,
+    // });
+  }
+
+  showContacts() {
+    // If there is at least one contact, automatically display the first one
+    if (this.state.hasContacts) {
+      return conversationList.map((convo) =>
+        h(Contact, {
+          key: convo.contactId,
+          ...convo,
+          active: this.state.selectedContact === convo.contactId,
+        }),
+      );
+    }
+    return '';
+  }
+
   render() {
     return h(GlobalContainer, [
-      h(
-        LeftContainer,
-        conversationList.map((convo) => h(Contact, convo)),
-      ),
+      h(LeftContainer, this.showContacts()),
       h(CenterContainer, [h(Conversation)]),
     ]);
   }

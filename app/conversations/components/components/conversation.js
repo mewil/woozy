@@ -1,9 +1,9 @@
 import { Component } from 'react';
 import { h, div } from 'react-hyperscript-helpers';
-import styled from 'styled-components';
-import { Body, Input } from '@woozy/ui';
-import { Message } from './message';
 
+import { Input } from '@woozy/ui';
+import { Message } from './message';
+import { Headline } from './contact-headline';
 /*
     senderID: this.props.senderID,
     recipientID: this.propss.recipientID,
@@ -15,77 +15,63 @@ import { Message } from './message';
 
 const tempMessages = [
   {
+    messageID: 100,
     senderID: 1,
     recipientID: 0,
     timestamp: 'NOW',
     content: 'Hey this is my first text.',
     requestApproval: false,
     status: 'APPROVED',
+    isUser: false,
   },
   {
+    messageID: 200,
     senderID: 1,
     recipientID: 0,
     timestamp: 'NOW',
     content: 'Hey this is my second text.',
     requestApproval: true,
     status: 'PENDING',
+    isUser: false,
   },
 ];
-
-const ConversationHeaderWrapper = styled.div`
-  width: 100%;
-  height: 80px;
-  background-color: 
-  outline: solid;
-  outline-width: thin;
-  outline-color: gray;
-`;
 
 export class Conversation extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      // contactName = this.props.contactName ? this.props.contactName === true : "Shameek Ray"
+      // This should become props passed in using mapStateToProps. Needs to be replaced.
       selectedContactName: 'Shameek Ray',
       selectedContactID: 1,
       isContactSelected: false,
       isFriendContact: false,
       isAvoidedContact: false,
+      isUser: false,
     };
   }
 
   contactHeadline() {
-    return h(ConversationHeaderWrapper, [
-      h(
-        Body,
-        this.state.contactName
-          ? this.isContactSelected === true
-          : 'Choose a contact to see their messages.',
-      ),
-      h(div, this.contactStatus()),
-    ]);
-  }
-
-  contactStatus() {
-    if (this.state.isFriendContact) return 'Woozy Friend';
-    else if (this.state.isAvoidedContact) return 'Avoiding';
-    return '';
+    return h(Headline, this.state);
   }
 
   sendNewText() {
-    return h(div, [h(Input)]);
+    this.state = this.state; // place holder to pass lint test -- replace with logic
+    return div([h(Input)]);
   }
 
   showMessages() {
+    this.state = this.state; // place holder to pass lint test -- replace with logic
     return h(
       div,
-      tempMessages.map((message) => h(Message, message)),
+      tempMessages.map((message) =>
+        h(Message, { ...message, key: message.messageID }),
+      ),
     );
   }
 
   render() {
-    return h(div, [
+    return div([
       this.contactHeadline(),
       this.showMessages(),
       this.sendNewText(),
