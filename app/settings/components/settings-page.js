@@ -7,6 +7,8 @@ import { NavLink } from 'react-router-dom';
 import { routes } from '../../app/constants';
 
 
+import {theme} from '@woozy/theme';
+
 const OuterContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -27,6 +29,7 @@ const SaveButton = styled(Container)`
   background-color: ${({ theme }) => theme.success};
   padding: 10px;
   height: 40px;
+
 `;
 
 const StyledNavLink = styled(NavLink)`
