@@ -113,14 +113,11 @@ const BlockedPage = ({ users, loggedInUser }) =>
     h(StyledNavLink, { to: routes.SETTINGS }, [h(Container, 'Done')]),
   ]);
 
+
 const mapStateToProps = (state) => ({
   users: getNotLoggedInUsers(state),
   loggedInUser: getLoggedInUser(state),
 });
 
 export const FriendPageConn = connect(mapStateToProps)(FriendsPage);
-
 export const BlockedPageConn = connect(mapStateToProps)(BlockedPage);
-    ]);
-  }
-}
