@@ -1,9 +1,5 @@
 import { Component } from 'react';
-<<<<<<< HEAD
 import { h } from 'react-hyperscript-helpers';
-=======
-import { h, hr } from 'react-hyperscript-helpers';
->>>>>>> schedule and friends slightly finished
 import styled from 'styled-components';
 
 const OuterContainer = styled.div`
@@ -36,10 +32,6 @@ const Rows = styled.div`
   padding: 5px;
 `;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> schedule and friends slightly finished
 const Container = styled.button`
   display: flex;
   margin: 20px;
@@ -75,12 +67,7 @@ const ContactName = styled.div`
   display: flex;
 `;
 
-<<<<<<< HEAD:app/settings/components/friend-setup.js
 export class FriendsPage extends Component {
-=======
-<<<<<<< HEAD
-export class FriendPage extends Component {
->>>>>>> trying to merge:app/friends/components/friend-setup.js
   render() {
     return h(OuterContainer, [
       h(Title, 'Choose your friends'),
@@ -96,42 +83,3 @@ export class FriendPage extends Component {
     ]);
   }
 }
-
-<<<<<<< HEAD:app/settings/components/friend-setup.js
-export default FriendsPage;
-=======
-export default FriendPage;
-=======
-const LineBreak = styled.hr``;
-
-export class FriendsPage extends Component {
-  render() {
-    return h(OuterContainer,
-            [h(Title,"Choose your friends"),
-            h(ScrollBox, 
-              [h(Rows, 
-                [h(ContactName, "Aditi"),
-                h(FriendButton, "Add")]),
-              h(Rows,
-                [h(ContactName, "Sahil"),
-                h(FriendButton, "Add")]),
-              h(Rows, 
-                [h(ContactName, "Sydnie"),
-                h(FriendButton, "Add")]),
-              h(Rows, 
-                [h(ContactName, "Michael"),
-                h(FriendButton, "Add")]),
-              h(Rows, 
-                [h(ContactName, "Shameek"),
-                h(FriendButton, "Add")]),
-              h(Rows, 
-                [h(ContactName, "Rosie"),
-                h(FriendButton, "Add")])]),
-            h(SaveButton, "Done")]);
-  }
-}
-
-
-export default FriendsPage;
->>>>>>> schedule and friends slightly finished
->>>>>>> trying to merge:app/friends/components/friend-setup.js
