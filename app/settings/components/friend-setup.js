@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { h } from 'react-hyperscript-helpers';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import { theme } from '@woozy/theme';
+// import { theme } from '@woozy/theme';
 import { routes } from '../../app/constants';
 
 const OuterContainer = styled.div`
@@ -91,7 +91,9 @@ export class FriendsPage extends Component {
         h(Rows, [h(ContactName, 'Shameek'), h(FriendButton, 'Add')]),
         h(Rows, [h(ContactName, 'Rosie'), h(FriendButton, 'Add')]),
       ]),
-      h(StyledNavLink, {to: routes.SETTINGS},[h(Container, 'Save Settings')]),
+      h(StyledNavLink, { to: routes.SETTINGS }, [
+        h(Container, 'Save Settings'),
+      ]),
     ]);
   }
 }
@@ -108,7 +110,9 @@ export class BlockedPage extends Component {
         h(Rows, [h(ContactName, 'Shameek'), h(FriendButton, 'Add')]),
         h(Rows, [h(ContactName, 'Rosie'), h(FriendButton, 'Add')]),
       ]),
-      h(StyledNavLink, {to: routes.SETTINGS},[h(Container, 'Save Settings')]),
+      h(StyledNavLink, { to: routes.SETTINGS }, [
+        h(Container, 'Save Settings'),
+      ]),
     ]);
   }
 }

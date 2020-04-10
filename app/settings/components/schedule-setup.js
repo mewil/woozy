@@ -2,9 +2,8 @@ import { Component } from 'react';
 import { h } from 'react-hyperscript-helpers';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import { theme } from '@woozy/theme';
+// import { theme } from '@woozy/theme';
 import { routes } from '../../app/constants';
-import { React } from 'react';
 
 const OuterContainer = styled.div`
   display: flex;
@@ -169,7 +168,9 @@ export class SchedulePage extends Component {
         ]),
         h(Select, [h(Option, 'am'), h(Option, 'pm')]),
       ]),
-      h(StyledNavLink, {to: routes.SETTINGS},[h(Container, 'Save Settings')]),
+      h(StyledNavLink, { to: routes.SETTINGS }, [
+        h(Container, 'Save Settings'),
+      ]),
     ]);
   }
 }
