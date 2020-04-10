@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  user_id: String,
+  user_id: mongoose.Schema.Types.ObjectId,
   password: String,
-  trusted_friend_id: String,
-  avoiding_id: [String],
+  trusted_friend_id: mongoose.Schema.Types.ObjectId,
+  avoiding_id: [mongoose.Schema.Types.ObjectId],
 });
 
-mongoose.model('User', userSchema);
+export const User = mongoose.model('User', userSchema);
