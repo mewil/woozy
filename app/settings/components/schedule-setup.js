@@ -61,8 +61,35 @@ export class SchedulePage extends Component {
       h(SmallHeader, 'Start time'),
       h(Time, ''),
       h(SmallHeader, 'End time'),
+<<<<<<< HEAD
       h(Time, ''),
       h(StyledNavLink, { to: routes.SETTINGS }, [h(Container, 'Done')]),
+=======
+      h(Rows, [
+        h(Select, [
+          h(Option, 1),
+          h(Option, 2),
+          h(Option, 3),
+          h(Option, 4),
+          h(Option, 5),
+          h(Option, 6),
+          h(Option, 7),
+          h(Option, 8),
+          h(Option, 9),
+          h(Option, 10),
+          h(Option, 11),
+          h(Option, 12),
+        ]),
+        h(Select, [
+          h(Option, '00'),
+          h(Option, '15'),
+          h(Option, '30'),
+          h(Option, '45'),
+        ]),
+        h(Select, [h(Option, 'am'), h(Option, 'pm')]),
+      ]),
+      h(StyledNavLink, {to: routes.SETTINGS},[h(Container, 'Save Settings')]),
+>>>>>>> Combined settings screens together
     ]);
   }
 }
