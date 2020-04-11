@@ -6,7 +6,7 @@ const routes = express.Router();
 let Conversation = require('../../db/conversation');
 let Message = require('../../db/message');
 let User = require('../../db/user');
-const port = 3000;
+// const port = 3000;
 
 
 // Get all-messages
@@ -32,8 +32,8 @@ routes.route('/').post(function(req, res) {
         res.status(200).json({'message': 'message added successfully'});
     });
 });
-app.get('/', (req, res) => res.send('Hello World!'))
+// app.get('/', (req, res) => res.send('Hello World!'))
 
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
+// app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
 
-module.exports = router;
+module.exports = routes;

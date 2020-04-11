@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-export const WOOZY_MESSAGE_STATUS = {
+const WOOZY_MESSAGE_STATUS = {
   NOT_WOOZY: 'not_woozy',
   PENDING: 'pending',
   APPROVED: 'approve',
@@ -21,4 +21,4 @@ const messageSchema = new mongoose.Schema({
   },
 });
 
-export const Message = mongoose.model('Message', messageSchema);
+module.exports = mongoose.model('Message', messageSchema);
