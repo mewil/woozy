@@ -168,9 +168,7 @@ export class SchedulePage extends Component {
         ]),
         h(Select, [h(Option, 'am'), h(Option, 'pm')]),
       ]),
-      h(StyledNavLink, { to: routes.SETTINGS }, [
-        h(Container, 'Save Settings'),
-      ]),
+      h(StyledNavLink, { to: routes.SETTINGS }, [h(Container, 'Done')]),
     ]);
   }
 }

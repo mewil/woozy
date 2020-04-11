@@ -60,7 +60,7 @@ const ContactName = styled.div`
   width: 150px;
   font-size: 15px;
   text-align: center;
-  height: 50px;
+  padding: 10px;
   align-items: center:
   display: flex;
 `;
@@ -91,9 +91,7 @@ export class FriendsPage extends Component {
         h(Rows, [h(ContactName, 'Shameek'), h(FriendButton, 'Add')]),
         h(Rows, [h(ContactName, 'Rosie'), h(FriendButton, 'Add')]),
       ]),
-      h(StyledNavLink, { to: routes.SETTINGS }, [
-        h(Container, 'Save Settings'),
-      ]),
+      h(StyledNavLink, { to: routes.SETTINGS }, [h(Container, 'Done')]),
     ]);
   }
 }
@@ -110,9 +108,7 @@ export class BlockedPage extends Component {
         h(Rows, [h(ContactName, 'Shameek'), h(FriendButton, 'Add')]),
         h(Rows, [h(ContactName, 'Rosie'), h(FriendButton, 'Add')]),
       ]),
-      h(StyledNavLink, { to: routes.SETTINGS }, [
-        h(Container, 'Save Settings'),
-      ]),
+      h(StyledNavLink, { to: routes.SETTINGS }, [h(Container, 'Done')]),
     ]);
   }
 }
