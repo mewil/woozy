@@ -15,6 +15,7 @@ const GlobalContainer = styled.div`
   width: 100%;
   height: 100%;
 `;
+
 const LeftContainer = styled.div`
   display: flex;
   align-items: flex-start;
@@ -29,7 +30,7 @@ const LeftContainer = styled.div`
 
 const CenterContainer = styled.div`
   height: 600px;
-  width: 50%;
+  width: 75%;
   background-color: beige;
   text-align: center;
 `;
