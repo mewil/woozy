@@ -5,19 +5,17 @@ import { batchActions } from 'redux-batched-actions';
 
 import { apiFetch, responseHasError } from '@woozy/fetch';
 
-import { addUsersAction, addAuthUserAction } from './actions';
+import { addUsersAction, addAuthUserAction, fetchUsersAction } from './actions';
 
-export function* onFetchUser({ payload: { userId } }) {
-  const url = `/v1/user/${userId}`;
-  const result = yield call(apiFetch, { url });
+export function* onFetchUsers() {
+  const result = yield call(apiFetch, { url: '/api/user/' });
 
   if (responseHasError(result)) {
     return;
   }
 
-  const user = get(result, 'data.user', {});
-
-  yield put(addUsersAction({ user }));
+  const users = get(result, 'data', {});
+  yield put(addUsersAction({ users }));
 }
 
 export function* onFetchLoginUser({ payload: { username } }) {
@@ -34,5 +32,11 @@ export function* onFetchLoginUser({ payload: { username } }) {
   }
 
   const user = get(result, 'data', {});
-  yield put(batchActions([addAuthUserAction({ user }), replace('/')]));
+  yield put(
+    batchActions([
+      fetchUsersAction(),
+      addAuthUserAction({ user }),
+      replace('/'),
+    ]),
+  );
 }

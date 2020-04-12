@@ -1,9 +1,9 @@
 const express = require('express');
-const routes = express.Router();
+const router = express.Router();
 
 const User = require('../../db/user');
 
-routes.route('/').post((req, res) => {
+router.post('/', (req, res) => {
   const { username } = req.body;
   if (!username) {
     res.status(400).send({
@@ -28,7 +28,7 @@ routes.route('/').post((req, res) => {
         } else {
           res.send({
             status: true,
-            message: 'successfully created user',
+            message: 'successfully logged in user',
             data: user,
           });
         }
@@ -37,4 +37,21 @@ routes.route('/').post((req, res) => {
   }
 });
 
-module.exports = routes;
+router.get('/', (_req, res) => {
+  User.find().exec((err, users) => {
+    if (err) {
+      res.status(500).send({
+        status: false,
+        message: err,
+      });
+    } else {
+      res.send({
+        status: true,
+        message: 'successfully fetched users',
+        data: users,
+      });
+    }
+  });
+});
+
+module.exports = router;
