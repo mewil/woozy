@@ -19,3 +19,10 @@ export const addConversationsAction = ({ conversations }) => ({
   type: ADD_CONVERSATIONS,
   payload: { conversations },
 });
+
+export const ADD_MESSAGE = 'messages/ADD_MESSAGE';
+
+export const addMessage = ({ message }) => ({
+  type: ADD_MESSAGE,
+  payload: { message },
+});
