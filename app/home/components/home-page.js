@@ -69,11 +69,10 @@ export class HomePage extends Component {
   }
 
   onContactClick(newSelectedID) {
-    console.log(newSelectedID);
-    this.state = this.state; // place holder to pass lint test -- replace with logic
-    // this.setState({
-    //   selectedContact: newSelectedID,
-    // });
+    console.log('A contact has been selected.');
+    this.setState({
+      selectedContact: newSelectedID,
+    });
   }
 
   showContacts() {
@@ -81,8 +80,9 @@ export class HomePage extends Component {
     if (this.state.hasContacts) {
       return conversationList.map((convo) =>
         h(Contact, {
-          key: convo.contactId,
           ...convo,
+          key: convo.contactId,
+          onClick: () => this.onContactClick(convo.contactId),
           active: this.state.selectedContact === convo.contactId,
         }),
       );
@@ -93,7 +93,9 @@ export class HomePage extends Component {
   render() {
     return h(GlobalContainer, [
       h(LeftContainer, this.showContacts()),
-      h(CenterContainer, [h(Conversation)]),
+      h(CenterContainer, [
+        h(Conversation, { contactID: this.state.contactId }),
+      ]),
     ]);
   }
 }
