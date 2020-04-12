@@ -31,8 +31,9 @@ const LeftContainer = styled.div`
 const CenterContainer = styled.div`
   height: 600px;
   width: 75%;
-  background-color: beige;
+  background-color: white;
   text-align: center;
+  overflow: scroll;
 `;
 
 const conversationList = [

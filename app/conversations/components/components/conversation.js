@@ -90,6 +90,16 @@ const tempMessages = [
     status: 'PENDING',
     isUser: false,
   },
+  {
+    messageID: 800,
+    senderID: 1,
+    recipientID: 0,
+    timestamp: 'NOW',
+    content: 'Hey this message is not from the user and not requesting approval',
+    requestApproval: false,
+    status: 'PENDING',
+    isUser: false,
+  },
 ];
 
 

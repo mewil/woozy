@@ -12,24 +12,22 @@ import { Button } from '@woozy/ui';
 
 const Container = styled.div`
   flex-direction: row;
-  height: 80px;
   margin: 5px 10px;
   border-radius: 4px;
-  // max-width: 80%;
-  overflow: scroll;
+  max-width: 80%;
 `;
 
 const Text = styled.div`
   position: relative;
   color: black;
   margin: 8px;
-  font-size: 16;
   text-align: left;
   word-wrap: break-word;
 `;
 
 const MessageStatus = styled.p`
-  color: ${(props) => props.color};
+  color: #444;
+  font-size: 12px;
 `;
 
 export class Message extends Component {
@@ -48,28 +46,40 @@ export class Message extends Component {
   renderMessageStatus() {
     if (this.state.requestApproval) {
       if (this.state.status === 'REJECTED') {
-        return h(MessageStatus, { color: 'red', }, ['Rejected'])
+        return h(MessageStatus, ['Rejected'])
       }
       if (this.state.status === 'APPROVED') {
-        return h(MessageStatus, { color: 'green', }, ['Approved'])
+        return h(MessageStatus, ['Approved'])
       }
       if (this.state.status === 'PENDING') {
-        return h(MessageStatus, { color: 'yellow', }, ['Pending'])
+        return h(MessageStatus, ['Pending'])
       }
     }
   }
 
   render() {
+    let backgroundColor = '#EEE';
+    if (this.state.isUser) {
+      if (!this.state.requestApproval || this.state.status === 'APPROVED') {
+        backgroundColor = 'lightgreen';
+      }
+      else if (this.state.status === 'PENDING') {
+        backgroundColor = 'lightgoldenrodyellow';
+      }
+      else if (this.state.status === 'REJECTED') {
+        backgroundColor = '#db4054';
+      }
+    }
     return h(Container,
       {
         style: this.state.isUser
           ? {
             alignSelf: 'flex-end',
-            backgroundColor: '#404040',
+            backgroundColor: backgroundColor,
           }
           : {
             alignSelf: 'flex-start',
-            backgroundColor: '#F0F2F7',
+            backgroundColor: backgroundColor,
           },
       },
       [h(Text, [
@@ -77,12 +87,12 @@ export class Message extends Component {
         !this.state.isUser && this.state.requestApproval && this.state.status === 'PENDING' ?
           h(div, [
             h(Button, {
-              style: { backgroundColor: 'green', },
+              style: { backgroundColor: 'lightgreen', borderColor: '#888', marginRight: '5px', marginTop: '5px', },
               onClick: () => this.updateMessageStatus('APPROVED'),
             },
               ['Approve']),
             h(Button, {
-              style: { backgroundColor: 'red', },
+              style: { backgroundColor: '#db4054', borderColor: '#888', marginRight: '5px', marginTop: '5px', },
               onClick: () => this.updateMessageStatus('REJECTED'),
             }, ['Deny'])])
           : this.renderMessageStatus(),
