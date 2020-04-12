@@ -8,7 +8,6 @@ import { IntlProvider } from 'react-intl';
 import { getTheme } from '@woozy/theme';
 
 import { HeaderConn } from './header';
-import { Footer } from './footer';
 
 const Container = styled.div`
   margin: 80px auto 0 auto;
@@ -19,7 +18,6 @@ const Navigator = ({ theme, children }) =>
     h(ThemeProvider, { theme }, [
       h(HeaderConn),
       h(Container, [React.Children.toArray(children)]),
-      h(Footer),
     ]),
   ]);
 
