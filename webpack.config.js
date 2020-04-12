@@ -51,16 +51,6 @@ const devConfig = {
       'process.env.NODE_ENV': '"development"',
     }),
   ],
-  devServer: {
-    historyApiFallback: true,
-    contentBase: './build',
-    proxy: {
-      '/v1': {
-        target: 'http://localhost:8000',
-        secure: false,
-      },
-    },
-  },
   performance: {
     hints: process.env.NODE_ENV === 'production' ? 'warning' : false,
   },

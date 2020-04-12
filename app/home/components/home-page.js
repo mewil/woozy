@@ -2,10 +2,10 @@ import { Component } from 'react';
 import { h } from 'react-hyperscript-helpers';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { Contact } from '@woozy/conversations/components/components/contact';
-import { Conversation } from '@woozy/conversations/components/components/conversation';
 
 import {
+  Contact,
+  Conversation,
   getConversations,
   fetchConversationsAction,
 } from '@woozy/conversations';
