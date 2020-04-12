@@ -17,8 +17,8 @@ const contactStatus = (isFriendContact, isAvoidedContact) => {
   return '';
 };
 
-export const Headline = (props) =>
+export const Headline = ({ contactName, isFriendContact, isAvoidedContact }) =>
   h(ConversationHeaderWrapper, [
-    h(Body, props.contactName),
-    h(div, contactStatus(props.isFriendContact, props.isAvoidedContact)),
+    h(Body, contactName),
+    h(div, contactStatus(isFriendContact, isAvoidedContact)),
   ]);

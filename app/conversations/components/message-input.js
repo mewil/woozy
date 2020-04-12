@@ -36,19 +36,32 @@ export class MessageInput extends Component {
     this.setState({ value: event.target.value });
   }
 
+  handleOnKeyPress(event) {
+    if (event.key === 'Enter') {
+      // POST this message
+      this.setState({ value: '' });
+    }
+  }
+
   render() {
     return h(MessageInputWrapper, [
       h(InputWrapper, [
         h(Input, {
           onChange: (event) => this.onMessageType(event),
+          onKeyPress: (event) => this.handleOnKeyPress(event),
           value: this.state.value,
           type: 'text',
         }),
       ]),
       h(ButtonWrapper, [
-        h(Button, { onClick: (event) => this.onMessageSend(event) }, 'Send'),
+        h(
+          Button,
+          {
+            onClick: (event) => this.onMessageSend(event),
+          },
+          'Send',
+        ),
       ]),
     ]);
-    // return div("Hello");
   }
 }
