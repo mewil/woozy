@@ -52,61 +52,56 @@ const ModalOverlay = styled.div`
 export class HomePage extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selectedContactId: undefined,
-    };
+    if (conversationList.length > 0) {
+      this.state = {
+        hasContacts: true,
+        selectedContactID: conversationList[0].contactId,
+        selectedContactName: conversationList[0].contactName,
+      };
+    } else {
+      this.state = {
+        hasContacts: false,
+      };
+    }
   }
 
   componentDidMount() {
     const { fetchConversations } = this.props;
     fetchConversations();
-    // setInterval(fetchConversations, 500);
+  }
+
+  onContactClick(newSelectedID, newSelectedContactName) {
+    this.setState({
+      selectedContactID: newSelectedID,
+      selectedContactName: newSelectedContactName,
+    });
+  }
+
+  showContacts() {
+    // If there is at least one contact, automatically display the first one
+    if (this.state.hasContacts) {
+      return conversationList.map((convo) =>
+        h(Contact, {
+          ...convo,
+          key: convo.contactId,
+          onClick: () =>
+            this.onContactClick(convo.contactId, convo.contactName),
+          active: this.state.selectedContactID === convo.contactId,
+        }),
+      );
+    }
+    return 'There are no contacts.';
   }
 
   render() {
-    const {
-      showNewConversationModal,
-      usersNotInConversations,
-      conversations,
-      theme,
-      closeModal,
-      fetchCreateConversation,
-    } = this.props;
-    const { selectedContactId = get(head(conversations), 'id') } = this.state;
-    return h(Fragment, [
-      h(ModalOverlay, { open: showNewConversationModal }, [
-        h(NewConversationModal, {
-          closeModal,
-          fetchCreateConversation,
-          theme,
-          users: usersNotInConversations,
-          addCommand: (c) => this.addCommand(c),
+    // isContactSelected: true
+    return h(GlobalContainer, [
+      h(LeftContainer, this.showContacts()),
+      h(CenterContainer, [
+        h(Conversation, {
+          contactID: this.state.selectedContactID,
+          contactName: this.state.selectedContactName,
         }),
-      ]),
-      h(GlobalContainer, [
-        h(LeftContainer, [
-          !isEmpty(conversations)
-            ? conversations.map(({ id, user = {}, lastMessage = {} }, key) => {
-                const { username } = user;
-                const { content } = lastMessage;
-                return h(Contact, {
-                  key,
-                  onClick: () =>
-                    this.setState({
-                      selectedContactId: id,
-                    }),
-                  selected: selectedContactId === id,
-                  username,
-                  lastMessage: content,
-                });
-              })
-            : 'No Conversations',
-        ]),
-        h(CenterContainer, [
-          h(Conversation, {
-            contactId: selectedContactId,
-          }),
-        ]),
       ]),
     ]);
   }
