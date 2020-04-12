@@ -4,3 +4,4 @@ import * as sagas from './sagas';
 export * from './actions';
 export * from './selectors';
 export { reducers, sagas };
+export * from './components';

@@ -30,9 +30,10 @@ const LeftContainer = styled.div`
 
 const CenterContainer = styled.div`
   height: 600px;
-  width: 50%;
-  background-color: beige;
+  width: 75%;
+  background-color: white;
   text-align: center;
+  overflow: scroll;
 `;
 
 const conversationList = [

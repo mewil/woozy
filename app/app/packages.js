@@ -35,4 +35,5 @@ export const packages = use([
   require('@woozy/theme'),
   require('@woozy/user'),
   require('@woozy/conversations'),
+  require('@woozy/settings'),
 ]);
