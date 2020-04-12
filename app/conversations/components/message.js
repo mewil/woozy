@@ -4,10 +4,7 @@ import styled from 'styled-components';
 
 import { Button } from '@woozy/ui';
 
-// const ContainerContainer = styled.div`
-//   display: flex;
-//   width: 100%;
-// `;
+import { WOOZY_STATES } from '../constants';
 
 const Container = styled.div`
   flex-direction: row;
@@ -44,16 +41,9 @@ export class Message extends Component {
 
   renderMessageStatus() {
     if (this.state.requestApproval) {
-      if (this.state.status === 'REJECTED') {
-        return h(MessageStatus, ['Rejected']);
-      }
-      if (this.state.status === 'APPROVED') {
-        return h(MessageStatus, ['Approved']);
-      }
-      if (this.state.status === 'PENDING') {
-        return h(MessageStatus, ['Pending']);
-      }
+      return h(MessageStatus, [WOOZY_STATES[this.state.status]]);
     }
+    return null;
   }
 
   render() {
