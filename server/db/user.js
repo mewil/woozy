@@ -7,4 +7,4 @@ const userSchema = new mongoose.Schema({
   avoiding_id: [mongoose.Schema.Types.ObjectId],
 });
 
-export const User = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema);

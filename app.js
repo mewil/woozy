@@ -70,7 +70,7 @@ app.use((req, res, next) => {
     return next();
 });
 
-app.use('/v1', apiRouter);
+app.use('/api', apiRouter);
 
 // Intiialize development webpack (hot reloading, etc);
 if (app.get('env') !== 'production' && !config.api_work) {
