@@ -1,9 +1,11 @@
 import { Component } from 'react';
 import { input, h } from 'react-hyperscript-helpers';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 
 import { Button } from '@woozy/ui';
-// import { connect } from "react-redux";
+
+import { fetchLoginUserAction } from '../actions';
 
 const InputContainer = styled.div`
   margin: 30px 0;
@@ -34,6 +36,12 @@ export class LoginPage extends Component {
     });
   }
 
+  onClickLogin() {
+    const { username } = this.state;
+    const { loginUser } = this.props;
+    loginUser(username);
+  }
+
   render() {
     const { username, password } = this.state;
     return h(InputContainer, [
@@ -56,7 +64,7 @@ export class LoginPage extends Component {
       h(
         Button,
         {
-          onClick: () => console.log(username),
+          onClick: () => this.onClickLogin(),
         },
         ['Login'],
       ),
@@ -64,30 +72,13 @@ export class LoginPage extends Component {
   }
 }
 
-// import { Component } from "react";
-// import { h, div } from "react-hyperscript-helpers";
-// import InfiniteScroll from "react-infinite-scroll-component";
+const mapDispatchToProps = (dispatch) => ({
+  loginUser: (username) =>
+    dispatch(
+      fetchLoginUserAction({
+        username,
+      }),
+    ),
+});
 
-// import { FeedPost } from "./feed-post";
-
-// export class ProfilePage extends Component {
-//   render() {
-//     const { fetchFeed } = this.props;
-//     return div(h("hello"));
-//   }
-// }
-
-// function mapDispatchToProps(dispatch) {
-//   return {
-//     fetchFeed: (page) =>
-//       dispatch(
-//         fetchFeedAction({
-//           page,
-//         }),
-//       ),
-//   };
-// }
-
-// export const ProfilePageConn = connect()(ProfilePage);
-// mapStateToProps,
-// mapDispatchToProps,
+export const LoginPageConn = connect(null, mapDispatchToProps)(LoginPage);

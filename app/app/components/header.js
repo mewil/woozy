@@ -7,6 +7,7 @@ import { h } from 'react-hyperscript-helpers';
 
 // eslint-disable-next-line no-unused-vars
 import { theme as globalTheme, devices, getTheme } from '@woozy/theme';
+import { getAuthUserIsLoggedIn } from '@woozy/user';
 
 import { routes } from '../constants';
 
@@ -61,20 +62,22 @@ const StyledNavLink = styled(NavLink)`
   }
 `;
 
-const Header = () =>
+const Header = ({ loggedIn }) =>
   h(Fragment, [
     h(Helmet, [h('title', 'Woozy')]),
     h(Wrapper, [
       h(HeaderNavLink, { to: routes.HOME }, 'Woozy'),
       h(NavContainer, [
-        h(StyledNavLink, { to: routes.SIGNIN }, 'Signin'),
-        h(StyledNavLink, { to: routes.SETTINGS }, 'Settings'),
+        loggedIn
+          ? h(StyledNavLink, { to: routes.SETTINGS }, 'Settings')
+          : h(StyledNavLink, { to: routes.LOGIN }, 'LOGIN'),
       ]),
     ]),
   ]);
 
 const mapStateToProps = (state) => ({
   theme: getTheme(state),
+  loggedIn: getAuthUserIsLoggedIn(state),
 });
 
 export const HeaderConn = connect(mapStateToProps)(Header);

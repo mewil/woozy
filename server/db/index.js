@@ -7,6 +7,7 @@ mongoose
   .connect(`mongodb://${config.mongo_hostname}/${config.backend_db}`, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
+    useFindAndModify: false,
   })
   .then((res) => {
     if (res) {

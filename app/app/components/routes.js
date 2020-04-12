@@ -1,7 +1,6 @@
 import { h } from 'react-hyperscript-helpers';
-import { Route, Switch } from 'react-router';
+import { Route, Switch, Redirect } from 'react-router';
 
-import { routes } from '../constants';
 import { HomePageConn } from '@woozy/home';
 import {
   SettingPage,
@@ -10,44 +9,57 @@ import {
   FriendsPage,
   BlockedPage,
 } from '@woozy/settings';
-import { LoginPage } from '@woozy/user';
+import { LoginPageConn } from '@woozy/user';
 
-export const Routes = () =>
-  h(Switch, [
-    h(Route, {
-      exact: true,
-      path: routes.HOME,
-      component: HomePageConn,
-    }),
-    h(Route, {
-      exact: true,
-      path: routes.SETTINGS,
-      component: SettingPage,
-    }),
-    h(Route, {
-      exact: true,
-      path: routes.SETUP,
-      component: SetupPage,
-    }),
-    h(Route, {
-      exact: true,
-      path: routes.SCHEDULE,
-      component: SchedulePage,
-    }),
-    h(Route, {
-      exact: true,
-      path: routes.FRIENDS,
-      component: FriendsPage,
-    }),
-    h(Route, {
-      exact: true,
-      path: routes.SIGNIN,
-      component: LoginPage,
-    }),
-    h(Route, {
-      exact: true,
-      path: routes.BLOCKED,
-      component: BlockedPage,
-    }),
-    h(Route, { component: HomePageConn }),
-  ]);
+import { routes } from '../constants';
+
+export const Routes = ({ loggedIn }) =>
+  h(
+    Switch,
+    loggedIn
+      ? [
+          h(Route, {
+            exact: true,
+            path: routes.HOME,
+            component: HomePageConn,
+          }),
+          h(Route, {
+            exact: true,
+            path: routes.SETTINGS,
+            component: SettingPage,
+          }),
+          h(Route, {
+            exact: true,
+            path: routes.SETUP,
+            component: SetupPage,
+          }),
+          h(Route, {
+            exact: true,
+            path: routes.SCHEDULE,
+            component: SchedulePage,
+          }),
+          h(Route, {
+            exact: true,
+            path: routes.FRIENDS,
+            component: FriendsPage,
+          }),
+          h(Route, {
+            exact: true,
+            path: routes.BLOCKED,
+            component: BlockedPage,
+          }),
+          h(Route, { component: HomePageConn }),
+        ]
+      : [
+          h(Route, {
+            exact: true,
+            path: routes.LOGIN,
+            component: LoginPageConn,
+          }),
+          h(Route, [
+            h(Redirect, {
+              to: routes.LOGIN,
+            }),
+          ]),
+        ],
+  );

@@ -1,6 +1,6 @@
 version: '2'
 services:
-  woozy_website:
+  woozy_web:
     image: woozy_web
     container_name: woozy_web
     restart: always
@@ -19,3 +19,5 @@ services:
     image: mongo
     container_name: woozy_db
     restart: always
+    ports:
+      - 27017:27017
