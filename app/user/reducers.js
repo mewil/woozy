@@ -9,7 +9,7 @@ export const users = (state = {}, action = {}) => {
       const newUsers = values(get(payload, 'users', {})).reduce(
         (results, u) => ({
           ...results,
-          [u._id]: u,
+          [u.id]: u,
         }),
         {},
       );
