@@ -2,10 +2,10 @@ import { Component } from 'react';
 import { h } from 'react-hyperscript-helpers';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { Contact } from '@woozy/conversations/components/components/contact';
-import { Conversation } from '@woozy/conversations/components/components/conversation';
 
 import {
+  Contact,
+  Conversation,
   getConversations,
   fetchConversationsAction,
 } from '@woozy/conversations';
@@ -15,6 +15,7 @@ const GlobalContainer = styled.div`
   width: 100%;
   height: 100%;
 `;
+
 const LeftContainer = styled.div`
   display: flex;
   align-items: flex-start;
@@ -29,9 +30,10 @@ const LeftContainer = styled.div`
 
 const CenterContainer = styled.div`
   height: 600px;
-  width: 50%;
-  background-color: beige;
+  width: 75%;
+  background-color: white;
   text-align: center;
+  overflow: scroll;
 `;
 
 const conversationList = [
