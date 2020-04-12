@@ -8,7 +8,7 @@ import { addConversationsAction } from './actions';
 import { replace } from 'connected-react-router';
 
 export function* onFetchConversations() {
-  const url = '/v1/conversation/';
+  const url = '/api/conversation/';
   const result = yield call(apiFetch, { url });
 
   if (responseHasError(result)) return;
@@ -18,11 +18,10 @@ export function* onFetchConversations() {
 }
 
 export function* onFetchCreateConversation() {
-  const url = '/v1/conversation/';
+  const url = '/api/conversation/';
   const result = yield call(apiFetch, {
     url,
     method: 'POST',
-    form: true,
     body: {},
   });
 

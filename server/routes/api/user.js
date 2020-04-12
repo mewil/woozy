@@ -1,20 +1,23 @@
-const mongoose = require('mongoose');
 const express = require('express');
 const routes = express.Router();
 
 const User = require('../../db/user');
 
 routes.route('/').post((req, res) => {
-  if (!req.body.userName) {
+  const { username } = req.body;
+  if (!username) {
     res.status(400).send({
       status: false,
-      message: 'must include userName JSON field',
+      message: 'must include username JSON field',
     });
   } else {
-    User.create(
+    User.findOneAndUpdate(
+      { username },
+      { username },
       {
-        userId: mongoose.Types.ObjectId(),
-        userName: req.body.userName,
+        upsert: true,
+        new: true,
+        setDefaultsOnInsert: true,
       },
       (err, user) => {
         if (err) {
