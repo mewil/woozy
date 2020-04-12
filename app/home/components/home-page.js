@@ -15,6 +15,7 @@ const GlobalContainer = styled.div`
   width: 100%;
   height: 100%;
 `;
+
 const LeftContainer = styled.div`
   display: flex;
   align-items: flex-start;
@@ -55,7 +56,8 @@ export class HomePage extends Component {
     if (conversationList.length > 0) {
       this.state = {
         hasContacts: true,
-        selectedContact: conversationList[0].contactId,
+        selectedContactID: conversationList[0].contactId,
+        selectedContactName: conversationList[0].contactName,
       };
     } else {
       this.state = {
@@ -68,10 +70,10 @@ export class HomePage extends Component {
     fetchConversations();
   }
 
-  onContactClick(newSelectedID) {
-    console.log('A contact has been selected.');
+  onContactClick(newSelectedID, newSelectedContactName) {
     this.setState({
-      selectedContact: newSelectedID,
+      selectedContactID: newSelectedID,
+      selectedContactName: newSelectedContactName,
     });
   }
 
@@ -82,19 +84,24 @@ export class HomePage extends Component {
         h(Contact, {
           ...convo,
           key: convo.contactId,
-          onClick: () => this.onContactClick(convo.contactId),
-          active: this.state.selectedContact === convo.contactId,
+          onClick: () =>
+            this.onContactClick(convo.contactId, convo.contactName),
+          active: this.state.selectedContactID === convo.contactId,
         }),
       );
     }
-    return '';
+    return 'There are no contacts.';
   }
 
   render() {
+    // isContactSelected: true
     return h(GlobalContainer, [
       h(LeftContainer, this.showContacts()),
       h(CenterContainer, [
-        h(Conversation, { contactID: this.state.contactId }),
+        h(Conversation, {
+          contactID: this.state.selectedContactID,
+          contactName: this.state.selectedContactName,
+        }),
       ]),
     ]);
   }

@@ -50,19 +50,18 @@ export class Conversation extends Component {
 
     this.state = {
       // This should become props passed in using mapStateToProps. Needs to be replaced.
-      selectedContactName: 'Shameek Ray',
-      selectedContactID: this.props.contactID,
-      isContactSelected: true,
-      isFriendContact: false,
-      isAvoidedContact: false,
-      isUser: false,
+      // contactName: this.props.contactName,
+      // contactID: this.props.contactName,
+      // isFriendContact: false,
+      // isAvoidedContact: false,
+      // isUser: false,
       messages: tempMessages,
     };
   }
 
   render() {
     return h(ConversationContainer, [
-      h(Headline, this.state),
+      h(Headline, this.props),
       div(
         this.state.messages.map((message) =>
           h(Message, { ...message, key: message.messageID }),

@@ -28,6 +28,7 @@ export class MessageInput extends Component {
 
   onMessageSend(event) {
     this.setState({ value: '' });
+    // POST this message
     event.preventDefault();
   }
 

@@ -19,11 +19,6 @@ const contactStatus = (isFriendContact, isAvoidedContact) => {
 
 export const Headline = (props) =>
   h(ConversationHeaderWrapper, [
-    h(
-      Body,
-      props.contactName
-        ? props.isContactSelected === true
-        : 'Choose a contact to see their messages.',
-    ),
+    h(Body, props.contactName),
     h(div, contactStatus(props.isFriendContact, props.isAvoidedContact)),
   ]);
