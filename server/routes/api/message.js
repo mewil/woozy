@@ -5,11 +5,18 @@ const Message = require('../../db/message');
 
 // Get all-messages
 routes.route('/all-messages').get((_req, res) => {
-  Message.find((err, docs) => {
+  Message.find({}).exec((err, docs) => {
     if (err) {
-      res.status(400);
+      res.status(500).send({
+        status: false,
+        message: err,
+      });
     }
-    res.status(200).json(docs);
+    res.send({
+      status: true,
+      message: 'successfully received message',
+      data: docs,
+    });
   });
 });
 
@@ -21,9 +28,16 @@ routes.route('/:conversation').get((req, res) => {
     .limit(25);
   query.exec((err, docs) => {
     if (err) {
-      res.status(400);
+      res.status(500).send({
+        status: false,
+        message: err,
+      });
     }
-    res.status(200).json(docs);
+    res.send({
+      status: true,
+      message: 'successfully retrived messages',
+      data: docs,
+    });
   });
 });
 
@@ -31,17 +45,30 @@ routes.route('/:conversation').get((req, res) => {
 routes.route('/send').post((req, res) => {
   const message = new Message(req.body);
   message.save().then(() => {
-    res.status(200).json({ message: 'message added successfully' });
+    res.send({
+      status: true,
+      message: 'message sent successfully',
+    });
   });
 });
+
+// put route for updating messages to change the woozy status
+// find one and update
+// upsurt
 
 // delete all messages -- for dev use only
 routes.route('/reset').delete((req, res) => {
   Message.deleteMany({}, (err) => {
     if (err) {
-      res.status('BAD');
+      res.status(500).send({
+        status: false,
+        message: err,
+      });
     }
-    res.status(200);
+    res.send({
+      status: true,
+      message: 'deleted all messages successfully',
+    });
   });
 });
 
