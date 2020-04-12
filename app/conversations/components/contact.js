@@ -11,8 +11,8 @@ const SelectedConversationStyle = styled.div`
   outline-color: gray;
 `;
 
-export const Contact = ({ onClick, ...props }) =>
-  h(SelectedConversationStyle, { isSelected: props.active, onClick }, [
-    h(Body, props.contactName),
-    h(BodyFaded, props.lastMessage),
+export const Contact = ({ onClick, active, contactName, lastMessage }) =>
+  h(SelectedConversationStyle, { isSelected: active, onClick }, [
+    h(Body, contactName),
+    h(BodyFaded, lastMessage),
   ]);
