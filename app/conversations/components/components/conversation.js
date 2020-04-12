@@ -1,9 +1,10 @@
 import { Component } from 'react';
 import { h, div } from 'react-hyperscript-helpers';
-
-import { Input } from '@woozy/ui';
+import styled from 'styled-components';
 import { Message } from './message';
 import { Headline } from './contact-headline';
+import { MessageInput } from './message-input';
+
 /*
     senderID: this.props.senderID,
     recipientID: this.propss.recipientID,
@@ -12,6 +13,13 @@ import { Headline } from './contact-headline';
     timestamp: this.props.timestamp,
     content: this.props.content
  */
+
+const ConversationContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+`;
 
 const tempMessages = [
   {
@@ -43,38 +51,24 @@ export class Conversation extends Component {
     this.state = {
       // This should become props passed in using mapStateToProps. Needs to be replaced.
       selectedContactName: 'Shameek Ray',
-      selectedContactID: 1,
-      isContactSelected: false,
+      selectedContactID: this.props.contactID,
+      isContactSelected: true,
       isFriendContact: false,
       isAvoidedContact: false,
       isUser: false,
+      messages: tempMessages,
     };
   }
 
-  contactHeadline() {
-    return h(Headline, this.state);
-  }
-
-  sendNewText() {
-    this.state = this.state; // place holder to pass lint test -- replace with logic
-    return div([h(Input)]);
-  }
-
-  showMessages() {
-    this.state = this.state; // place holder to pass lint test -- replace with logic
-    return h(
-      div,
-      tempMessages.map((message) =>
-        h(Message, { ...message, key: message.messageID }),
-      ),
-    );
-  }
-
   render() {
-    return div([
-      this.contactHeadline(),
-      this.showMessages(),
-      this.sendNewText(),
+    return h(ConversationContainer, [
+      h(Headline, this.state),
+      div(
+        this.state.messages.map((message) =>
+          h(Message, { ...message, key: message.messageID }),
+        ),
+      ),
+      h(MessageInput),
     ]);
   }
 }
