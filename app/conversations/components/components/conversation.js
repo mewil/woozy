@@ -25,7 +25,8 @@ const tempMessages = [
     senderID: 1,
     recipientID: 0,
     timestamp: 'NOW',
-    content: 'Hey this message is from not the user and is requesting approval and still pending',
+    content:
+      'Hey this message is from not the user and is requesting approval and still pending',
     requestApproval: true,
     status: 'PENDING',
     isUser: false,
@@ -35,7 +36,8 @@ const tempMessages = [
     senderID: 1,
     recipientID: 0,
     timestamp: 'NOW',
-    content: 'Hey this message is from not the user and has already been accepted',
+    content:
+      'Hey this message is from not the user and has already been accepted',
     requestApproval: true,
     status: 'APPROVED',
     isUser: false,
@@ -65,7 +67,8 @@ const tempMessages = [
     senderID: 1,
     recipientID: 0,
     timestamp: 'NOW',
-    content: 'Hey this message is from not the user and is requesting approval and rejected',
+    content:
+      'Hey this message is from not the user and is requesting approval and rejected',
     requestApproval: true,
     status: 'REJECTED',
     isUser: false,
@@ -95,13 +98,13 @@ const tempMessages = [
     senderID: 1,
     recipientID: 0,
     timestamp: 'NOW',
-    content: 'Hey this message is not from the user and not requesting approval',
+    content:
+      'Hey this message is not from the user and not requesting approval',
     requestApproval: false,
     status: 'PENDING',
     isUser: false,
   },
 ];
-
 
 export class Conversation extends Component {
   constructor(props) {
