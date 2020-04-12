@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 // import { theme } from '@woozy/theme';
 import { routes } from '../../app/constants';
 
-import { Calendar, Time } from  '@woozy/ui';
+import { Calendar, Time } from '@woozy/ui';
 
 const OuterContainer = styled.div`
   display: flex;
@@ -57,7 +57,7 @@ export class SchedulePage extends Component {
     return h(OuterContainer, [
       h(Title, 'When will you be going out?'),
       h(SmallHeader, 'Date'),
-      h(Calendar,''),
+      h(Calendar, ''),
       h(SmallHeader, 'Start time'),
       h(Time, ''),
       h(SmallHeader, 'End time'),
