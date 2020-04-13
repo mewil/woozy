@@ -4,7 +4,18 @@ import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 // import { theme } from '@woozy/theme';
 import { routes } from '../../app/constants';
+<<<<<<< HEAD
 import { getNotLoggedInUsers, getLoggedInUser } from '@woozy/user';
+=======
+<<<<<<< HEAD
+import { getNotLoggedInUsers } from '@woozy/user';
+=======
+import {
+  getNotLoggedInUsers,
+  getUsers,
+} from '@woozy/user';
+>>>>>>> added dynamic rendering of contacts
+>>>>>>> added dynamic rendering of contacts
 
 const OuterContainer = styled.div`
   display: flex;
@@ -79,45 +90,30 @@ const StyledNavLink = styled(NavLink)`
     margin-left: 15px;
   }
 `;
-const FriendsPage = ({ users, loggedInUser }) =>
-  h(OuterContainer, [
-    h(Title, 'Choose your Friends'),
-    h(
-      ScrollBox,
-      users.map(({ username, id }) =>
-        h(Rows, [
-          h(ContactName, username),
-          loggedInUser.trustedFriendId && id !== loggedInUser.trustedFriendId
-            ? h(FriendButton, 'Add')
-            : h(FriendButton, 'Remove'),
-        ]),
-      ),
-    ),
-    h(StyledNavLink, { to: routes.SETTINGS }, [h(Container, 'Done')]),
-  ]);
+const FriendsPage = ({ users }) =>
+h(OuterContainer, [
+  h(Title, 'Choose your Friends'),
+  h(ScrollBox, Object.keys(users).map(function (k) {
+    return h(Rows, [h(ContactName, users[k].username), h(FriendButton, 'Add')])})),
+  h(StyledNavLink, { to: routes.SETTINGS }, [h(Container, 'Done')]),
+]);
 
-const BlockedPage = ({ users, loggedInUser }) =>
-  h(OuterContainer, [
-    h(Title, 'Choose people you want to avoid'),
-    h(
-      ScrollBox,
-      users.map(({ username, id }) =>
-        h(Rows, [
-          h(ContactName, username),
-          !loggedInUser.avoidingId.includes(id)
-            ? h(FriendButton, 'Add')
-            : h(FriendButton, 'Remove'),
-        ]),
-      ),
-    ),
-    h(StyledNavLink, { to: routes.SETTINGS }, [h(Container, 'Done')]),
-  ]);
-
+const BlockedPage = ({ users }) =>
+h(OuterContainer, [
+      h(Title, 'Choose people you want to avoid'),
+      h(ScrollBox, Object.keys(users).map(function (k) {
+        return h(Rows, [h(ContactName, users[k].username), h(FriendButton, 'Add')])})),
+      h(StyledNavLink, { to: routes.SETTINGS }, [h(Container, 'Done')]),
+    ]);
 
 const mapStateToProps = (state) => ({
   users: getNotLoggedInUsers(state),
   loggedInUser: getLoggedInUser(state),
 });
 
-export const FriendPageConn = connect(mapStateToProps)(FriendsPage);
+
+export const FriendPageConn = connect(
+  mapStateToProps,
+)(FriendsPage);
+
 export const BlockedPageConn = connect(mapStateToProps)(BlockedPage);
