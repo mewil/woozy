@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const WOOZY_MESSAGE_STATUS = {
   NOT_WOOZY: 'not_woozy',
   PENDING: 'pending',
-  APPROVED: 'approve',
+  APPROVED: 'approved',
   DENIED: 'denied',
 };
 
