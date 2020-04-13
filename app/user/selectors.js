@@ -1,4 +1,4 @@
-import { get, isNull, filter} from 'lodash';
+import { get, isNull, filter } from 'lodash';
 
 export const getUsers = (state) => get(state, 'users', {});
 
@@ -6,6 +6,5 @@ export const getAuthUserId = (state) => get(state, 'auth', null);
 
 export const getAuthUserIsLoggedIn = (state) => !isNull(getAuthUserId(state));
 
-export const getNotLoggedInUsers = (state) => filter(getUsers(state), function(o) {
-    return o.id != getAuthUserId(state);
-});
+export const getNotLoggedInUsers = (state) =>
+  filter(getUsers(state), (o) => o.id !== getAuthUserId(state));
