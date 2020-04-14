@@ -6,8 +6,8 @@ import {
   SettingPage,
   SetupPage,
   SchedulePage,
-  FriendsPage,
-  BlockedPage,
+  FriendPageConn,
+  BlockedPageConn,
 } from '@woozy/settings';
 import { LoginPageConn } from '@woozy/user';
 
@@ -41,12 +41,12 @@ export const Routes = ({ loggedIn }) =>
           h(Route, {
             exact: true,
             path: routes.FRIENDS,
-            component: FriendsPage,
+            component: FriendPageConn,
           }),
           h(Route, {
             exact: true,
             path: routes.BLOCKED,
-            component: BlockedPage,
+            component: BlockedPageConn,
           }),
           h(Route, { component: HomePageConn }),
         ]
