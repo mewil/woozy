@@ -15,9 +15,9 @@ export const Title = styled(Base)`
 `;
 
 export const Subtitle = styled(Base)`
-  margin-bottom: 26px;
-  font-size: 32px;
-  line-height: 38px;
+  margin-bottom: 16px;
+  font-size: 20px;
+  line-height: 30px;
   letter-spacing: 0.2px;
   font-weight: 500;
   color: ${({ theme }) => theme.primary};
@@ -26,6 +26,7 @@ export const Subtitle = styled(Base)`
 export const Body = styled(Base)`
   font-size: 15px;
   line-height: 24px;
+  margin-bottom: 16px;
   font-weight: 400;
   color: ${({ theme }) => theme.primary};
 `;

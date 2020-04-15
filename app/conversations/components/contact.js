@@ -2,17 +2,19 @@ import { h } from 'react-hyperscript-helpers';
 import styled from 'styled-components';
 import { Body, BodyFaded } from '@woozy/ui';
 
-const SelectedConversationStyle = styled.div`
-  background-color: ${({ isSelected }) => (isSelected ? 'lavender ' : 'white')};
+const Container = styled.div`
+  background-color: ${({ selected }) => (selected ? 'lavender ' : 'white')};
   height: 100px;
   width: 100%;
-  outline: solid;
-  outline-width: thin;
-  outline-color: gray;
 `;
 
-export const Contact = ({ onClick, active, contactName, lastMessage }) =>
-  h(SelectedConversationStyle, { isSelected: active, onClick }, [
-    h(Body, contactName),
+export const Contact = ({
+  onClick,
+  selected,
+  username = '',
+  lastMessage = '',
+}) =>
+  h(Container, { selected, onClick }, [
+    h(Body, username),
     h(BodyFaded, lastMessage),
   ]);
