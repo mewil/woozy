@@ -8,12 +8,12 @@ const WOOZY_MESSAGE_STATUS = {
 };
 
 const messageSchema = new mongoose.Schema({
-  messageId: mongoose.Schema.Types.ObjectId,
-  conversationId: mongoose.Schema.Types.ObjectId,
+  messageId: Number,
+  conversationId: Number,
   content: String,
   timestamp: Date,
-  fromUserId: mongoose.Schema.Types.ObjectId,
-  toUserId: mongoose.Schema.Types.ObjectId,
+  fromUserId: Number,
+  toUserId: Number,
   woozyApproved: {
     type: String,
     enum: Object.values(WOOZY_MESSAGE_STATUS),

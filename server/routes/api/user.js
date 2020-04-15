@@ -37,6 +37,18 @@ router.post('/', (req, res) => {
   }
 });
 
+// send a message Post request
+router.route('/create').post((req, res) => {
+  const user = new User(req.body);
+  user.save().then(() => {
+    res.send({
+      status: true,
+      message: 'User created successfully',
+      data: user
+    });
+  });
+});
+
 router.get('/', (_req, res) => {
   User.find().exec((err, users) => {
     if (err) {
@@ -51,6 +63,22 @@ router.get('/', (_req, res) => {
         data: users,
       });
     }
+  });
+});
+
+// delete all messages -- for dev use only
+router.route('/reset').delete((req, res) => {
+  User.deleteMany({}, (err) => {
+    if (err) {
+      res.status(500).send({
+        status: false,
+        message: err,
+      });
+    }
+    res.send({
+      status: true,
+      message: 'deleted all users successfully',
+    });
   });
 });
 

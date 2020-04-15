@@ -2,6 +2,7 @@ const express = require('express');
 const routes = express.Router();
 
 const Message = require('../../db/message');
+const Conversation = require('../../db/conversation');
 
 // Get all-messages
 routes.route('/all-messages').get((_req, res) => {
@@ -59,6 +60,14 @@ routes.route('/send').post((req, res) => {
 // delete all messages -- for dev use only
 routes.route('/reset').delete((req, res) => {
   Message.deleteMany({}, (err) => {
+    Conversation.deleteMany({}, (converr) => {
+      if (converr) {
+        res.status(500).send({
+          status: false,
+          message: converr,
+        });
+      }
+    });
     if (err) {
       res.status(500).send({
         status: false,
@@ -67,7 +76,7 @@ routes.route('/reset').delete((req, res) => {
     }
     res.send({
       status: true,
-      message: 'deleted all messages successfully',
+      message: 'deleted all messages and conversation successfully',
     });
   });
 });
