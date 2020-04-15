@@ -3,15 +3,16 @@ import styled from 'styled-components';
 import { Subtitle, Button } from '@woozy/ui';
 
 const ConversationHeaderWrapper = styled.div`
-  width: 100%;
   height: 70px;
   z-index: 10;
   display: flex;
   flex-direction: row;
-  align-items: baseline;
+  align-items: center;
   justify-content: center;
   background-color: white;
   padding: 10px;
+  position: absolute;
+  width: 75%;
   box-shadow: 1px 2px 4px lightgray;
   * {
     margin: 0px 10px;

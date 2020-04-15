@@ -6,20 +6,29 @@ import { connect } from 'react-redux';
 import { Input, Button } from '@woozy/ui';
 import { fetchCreateMessageAction } from '../actions';
 
-const MessageInputWrapper = styled.div`
+const Container = styled.div`
   display: flex;
-  width: 100%;
+  z-index: 10;
   flex-direction: row;
-`;
-const InputWrapper = styled.div`
-  width: 80%;
-  align-items: flex-end;
+  box-shadow: 1px 2px 4px lightgray;
+  background-color: white;
+  width: 75%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 8px;
+  justify-content: space-between;
 `;
 
-const ButtonWrapper = styled.div`
-  width: 20%;
+const InputContainer = styled.div`
+  width: 75%;
+  > {
+    width: 100%;
+  }
+  input {
+    width: 100%;
+  }
 `;
-
 export class MessageInput extends Component {
   constructor(props) {
     super(props);
@@ -49,25 +58,27 @@ export class MessageInput extends Component {
 
   render() {
     const { content } = this.state;
-    return h(MessageInputWrapper, [
-      h(InputWrapper, [
+    return h(Container, [
+      h(InputContainer, [
         h(Input, {
           onChange: (event) => this.onMessageType(event),
           onKeyPress: (event) => this.handleOnKeyPress(event),
           value: content,
           type: 'text',
+          placeholder: 'Type a message...',
         }),
       ]),
-      h(ButtonWrapper, [
-        h(
-          Button,
-          {
-            hollow: content === '',
-            onClick: () => this.sendMessage(),
+      h(
+        Button,
+        {
+          hollow: content === '',
+          onClick: () => this.sendMessage(),
+          style: {
+            height: '48px',
           },
-          'Send',
-        ),
-      ]),
+        },
+        'Send',
+      ),
     ]);
   }
 }

@@ -40,3 +40,19 @@ export function* onFetchLoginUser({ payload: { username } }) {
     ]),
   );
 }
+
+export function* onFetchUpdateUser({ payload: { user } }) {
+  const result = yield call(apiFetch, {
+    method: 'PUT',
+    url: '/api/user/',
+    body: {
+      ...user,
+    },
+  });
+
+  if (responseHasError(result)) {
+    return;
+  }
+
+  yield put(fetchUsersAction());
+}

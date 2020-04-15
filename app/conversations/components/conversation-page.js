@@ -8,7 +8,7 @@ import { replace } from 'connected-react-router';
 import { getTheme } from '@woozy/theme';
 import { getIsFriendContact, getIsAvoidedContact } from '@woozy/user';
 
-import { Contact } from './contact';
+import { ConversationList } from './conversation-list';
 import { ConversationConn } from './conversation';
 import { Headline } from './contact-headline';
 import { MessageInputConn } from './message-input';
@@ -30,7 +30,8 @@ const GlobalContainer = styled.div`
 
 const LeftContainer = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: ${({ hasConversations }) =>
+    hasConversations ? 'flex-start' : 'center'};
   flex-direction: column;
   width: 25%;
   box-shadow: 1px 2px 4px lightgray;
@@ -41,6 +42,10 @@ const CenterContainer = styled.div`
   width: 75%;
   text-align: center;
   overflow: scroll;
+`;
+
+const NoConversationContainer = styled.div`
+  padding-top: 40px;
 `;
 
 const ModalOverlay = styled.div`
@@ -72,6 +77,12 @@ export class ConversationPage extends Component {
     clearInterval(this.interval);
   }
 
+  setConversationId(id) {
+    this.setState({
+      conversationId: id,
+    });
+  }
+
   render() {
     const {
       showNewConversationModal,
@@ -98,26 +109,14 @@ export class ConversationPage extends Component {
         }),
       ]),
       h(GlobalContainer, [
-        h(LeftContainer, [
+        h(LeftContainer, { hasConversations: !isEmpty(conversations) }, [
           !isEmpty(conversations)
-            ? Object.values(conversations).map(
-                ({ id, user = {}, lastMessage = {} }, key) => {
-                  const { username } = user;
-                  const { content, timestamp } = lastMessage;
-                  return h(Contact, {
-                    key,
-                    onClick: () =>
-                      this.setState({
-                        conversationId: id,
-                      }),
-                    selected: conversationId === id,
-                    username,
-                    lastMessage: content,
-                    timestamp,
-                  });
-                },
-              )
-            : 'No Conversations',
+            ? h(ConversationList, {
+                conversations,
+                conversationId,
+                setConversationId: (id) => this.setConversationId(id),
+              })
+            : h(NoConversationContainer, ['No Conversations']),
         ]),
         h(CenterContainer, [
           h(Headline, {
