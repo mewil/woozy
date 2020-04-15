@@ -105,7 +105,7 @@ const BlockedPage = ({ users, loggedInUser }) =>
       Object.keys(users).map((k) =>
         h(Rows, [
           h(ContactName, users[k].username),
-          !loggedInUser.avoidingId.includes(users[k].id)
+          !Object.values(loggedInUser.avoidingId).includes(users[k].id)
             ? h(FriendButton, 'Add')
             : h(FriendButton, 'Remove'),
         ]),
