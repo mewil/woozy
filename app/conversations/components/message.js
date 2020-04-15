@@ -23,7 +23,8 @@ const Text = styled.div`
 
 const MessageStatus = styled.p`
   color: #444;
-  font-size: 12px;
+  font-size: 11px;
+  margin: 4px 0px;
 `;
 
 export class Message extends Component {

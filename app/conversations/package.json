@@ -6,6 +6,8 @@
   "author": "",
   "license": "GPL-3.0",
   "dependencies": {
-    "@woozy/fetch": "1.0.0"
+    "@woozy/fetch": "1.0.0",
+    "@woozy/ui": "1.0.0",
+    "@woozy/user": "1.0.0"
   }
 }

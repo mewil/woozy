@@ -8,7 +8,7 @@ import { Button } from '@woozy/ui';
 import { fetchLoginUserAction } from '../actions';
 
 const InputContainer = styled.div`
-  margin: 30px 0;
+  padding: 30px 0;
   display: flex;
   flex-direction: column;
   align-items: center;

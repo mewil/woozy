@@ -1,14 +1,22 @@
-import { Component } from 'react';
+import { Component, Fragment } from 'react';
 import { h } from 'react-hyperscript-helpers';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { get, head, isEmpty } from 'lodash';
+import { replace } from 'connected-react-router';
 
 import {
   Contact,
   Conversation,
-  getConversations,
+  getConversationsWithUsers,
   fetchConversationsAction,
+  getUsersNotInConversations,
+  fetchCreateConversationAction,
+  getConversationParticipants,
 } from '@woozy/conversations';
+import { getTheme } from '@woozy/theme';
+
+import { NewConversationModal } from './new-conversation-modal';
 
 const GlobalContainer = styled.div`
   display: flex;
@@ -20,100 +28,104 @@ const LeftContainer = styled.div`
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  background-color: white;
-  outline: solid;
-  outline-width: thin;
-  outline-color: gray;
-  height: 600px;
   width: 25%;
 `;
 
 const CenterContainer = styled.div`
-  height: 600px;
   width: 75%;
   background-color: white;
   text-align: center;
   overflow: scroll;
 `;
 
-const conversationList = [
-  {
-    contactId: 1,
-    contactName: 'Shameek Ray',
-    lastMessage: 'Woozy is a great app',
-    lastMessageTimestamp: '1021',
-  },
-  {
-    contactId: 2,
-    contactName: 'Michael Wilson',
-    lastMessage: 'Use hyperscript',
-    lastMessageTimestamp: '1033',
-  },
-];
+const ModalOverlay = styled.div`
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: ${({ open }) => (open ? 'flex' : 'none')};
+  background: #ffffff55;
+`;
 
 export class HomePage extends Component {
   constructor(props) {
     super(props);
-    if (conversationList.length > 0) {
-      this.state = {
-        hasContacts: true,
-        selectedContactID: conversationList[0].contactId,
-        selectedContactName: conversationList[0].contactName,
-      };
-    } else {
-      this.state = {
-        hasContacts: false,
-      };
-    }
+    this.state = {
+      selectedContactId: undefined,
+    };
   }
+
   componentDidMount() {
     const { fetchConversations } = this.props;
     fetchConversations();
-  }
-
-  onContactClick(newSelectedID, newSelectedContactName) {
-    this.setState({
-      selectedContactID: newSelectedID,
-      selectedContactName: newSelectedContactName,
-    });
-  }
-
-  showContacts() {
-    // If there is at least one contact, automatically display the first one
-    if (this.state.hasContacts) {
-      return conversationList.map((convo) =>
-        h(Contact, {
-          ...convo,
-          key: convo.contactId,
-          onClick: () =>
-            this.onContactClick(convo.contactId, convo.contactName),
-          active: this.state.selectedContactID === convo.contactId,
-        }),
-      );
-    }
-    return 'There are no contacts.';
+    // setInterval(fetchConversations, 500);
   }
 
   render() {
-    // isContactSelected: true
-    return h(GlobalContainer, [
-      h(LeftContainer, this.showContacts()),
-      h(CenterContainer, [
-        h(Conversation, {
-          contactID: this.state.selectedContactID,
-          contactName: this.state.selectedContactName,
+    const {
+      showNewConversationModal,
+      usersNotInConversations,
+      conversations,
+      theme,
+      closeModal,
+      fetchCreateConversation,
+    } = this.props;
+    const { selectedContactId = get(head(conversations), 'id') } = this.state;
+    return h(Fragment, [
+      h(ModalOverlay, { open: showNewConversationModal }, [
+        h(NewConversationModal, {
+          closeModal,
+          fetchCreateConversation,
+          theme,
+          users: usersNotInConversations,
+          addCommand: (c) => this.addCommand(c),
         }),
+      ]),
+      h(GlobalContainer, [
+        h(LeftContainer, [
+          !isEmpty(conversations)
+            ? conversations.map(({ id, user = {}, lastMessage = {} }, key) => {
+                const { username } = user;
+                const { content } = lastMessage;
+                return h(Contact, {
+                  key,
+                  onClick: () =>
+                    this.setState({
+                      selectedContactId: id,
+                    }),
+                  selected: selectedContactId === id,
+                  username,
+                  lastMessage: content,
+                });
+              })
+            : 'No Conversations',
+        ]),
+        h(CenterContainer, [
+          h(Conversation, {
+            contactId: selectedContactId,
+          }),
+        ]),
       ]),
     ]);
   }
 }
 
 const mapStateToProps = (state) => ({
-  conversations: getConversations(state),
+  conversations: getConversationsWithUsers(state),
+  parts: getConversationParticipants(state),
+  usersNotInConversations: getUsersNotInConversations(state),
+  showNewConversationModal:
+    get(state, 'router.location.pathname', '/') === '/new',
+  theme: getTheme(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetchConversations: () => dispatch(fetchConversationsAction()),
+  fetchCreateConversation: (userId) =>
+    dispatch(fetchCreateConversationAction({ userId })),
+  closeModal: () => dispatch(replace('/')),
 });
 
 export const HomePageConn = connect(
