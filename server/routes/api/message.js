@@ -40,6 +40,33 @@ router.post('/', (req, res) => {
   });
 });
 
+// PUT update message
+router.put('/:messageId', (req, res) => {
+  Message.findOneAndUpdate(
+    { _id: req.params.messageId },
+    { woozyStatus: req.body.woozyStatus },
+    {
+      new: true,
+      upsert: true,
+      runValidators: true,
+    },
+    (err, message) => {
+      if (err) {
+        res.status(500).send({
+          status: false,
+          message: err,
+        });
+      } else {
+        res.send({
+          status: true,
+          message: 'successfully updated message',
+          data: message,
+        });
+      }
+    },
+  );
+});
+
 // DELETE remove all messages
 router.delete('/', (_req, res) => {
   Message.deleteMany({}, (err) => {
