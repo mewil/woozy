@@ -7,7 +7,6 @@ import { routes } from '../../app/constants';
 
 import { getNotLoggedInUsers, getLoggedInUser } from '@woozy/user';
 
-
 const OuterContainer = styled.div`
   display: flex;
   flex-direction: column;
