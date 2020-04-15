@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 // import { theme } from '@woozy/theme';
 import { routes } from '../../app/constants';
-import { getNotLoggedInUsers } from '@woozy/user';
+import { getNotLoggedInUsers, getLoggedInUser } from '@woozy/user';
 
 const OuterContainer = styled.div`
   display: flex;
@@ -79,25 +79,35 @@ const StyledNavLink = styled(NavLink)`
     margin-left: 15px;
   }
 `;
-const FriendsPage = ({ users }) =>
+const FriendsPage = ({ users, loggedInUser }) =>
   h(OuterContainer, [
     h(Title, 'Choose your Friends'),
     h(
       ScrollBox,
-      users.map(({ username }) =>
-        h(Rows, [h(ContactName, username), h(FriendButton, 'Add')]),
+      users.map(({ username, id }) =>
+        h(Rows, [
+          h(ContactName, username),
+          loggedInUser.trustedFriendId && id !== loggedInUser.trustedFriendId
+            ? h(FriendButton, 'Add')
+            : h(FriendButton, 'Remove'),
+        ]),
       ),
     ),
     h(StyledNavLink, { to: routes.SETTINGS }, [h(Container, 'Done')]),
   ]);
 
-const BlockedPage = ({ users }) =>
+const BlockedPage = ({ users, loggedInUser }) =>
   h(OuterContainer, [
     h(Title, 'Choose people you want to avoid'),
     h(
       ScrollBox,
-      users.map(({ username }) =>
-        h(Rows, [h(ContactName, username), h(FriendButton, 'Add')]),
+      users.map(({ username, id }) =>
+        h(Rows, [
+          h(ContactName, username),
+          !loggedInUser.avoidingId.includes(id)
+            ? h(FriendButton, 'Add')
+            : h(FriendButton, 'Remove'),
+        ]),
       ),
     ),
     h(StyledNavLink, { to: routes.SETTINGS }, [h(Container, 'Done')]),
@@ -105,6 +115,7 @@ const BlockedPage = ({ users }) =>
 
 const mapStateToProps = (state) => ({
   users: getNotLoggedInUsers(state),
+  loggedInUser: getLoggedInUser(state),
 });
 
 export const FriendPageConn = connect(mapStateToProps)(FriendsPage);
