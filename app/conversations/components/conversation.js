@@ -1,9 +1,12 @@
 import { Component } from 'react';
 import { h, div } from 'react-hyperscript-helpers';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+
 import { Message } from './message';
 import { Headline } from './contact-headline';
-import { MessageInput } from './message-input';
+import { MessageInputConn } from './message-input';
+import { getMessages } from '../selectors';
 
 /*
     senderID: this.props.senderID,
@@ -107,30 +110,29 @@ const tempMessages = [
 ];
 
 export class Conversation extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      // This should become props passed in using mapStateToProps. Needs to be replaced.
-      // contactName: this.props.contactName,
-      // contactID: this.props.contactName,
-      // isFriendContact: false,
-      // isAvoidedContact: false,
-      // isUser: false,
-      messages: tempMessages,
-    };
-  }
-
   render() {
+    console.log('conversation props', this.props)
+    const messages = Object.values(this.props.messages)
     return div([
       h(Headline, this.props),
-      h(
-        ConversationContainer,
-        this.state.messages.map((message) =>
-          h(Message, { ...message, key: message.messageID }),
-        ),
-      ),
-      h(MessageInput),
+      messages.length > 0 ?
+        h(
+          ConversationContainer,
+          messages.map((message) =>
+            h(Message, { ...message, key: message.messageID }),
+          ) ,
+        )
+        : null,
+      h(MessageInputConn, {
+        contactID: this.props.selectedContactID,
+        contactName: this.props.selectedContactName,
+      }),
     ]);
   }
 }
+
+const mapStateToProps = (state) => ({
+  messages: getMessages(state),
+});
+
+export const ConversationConn = connect(mapStateToProps, null)(Conversation);

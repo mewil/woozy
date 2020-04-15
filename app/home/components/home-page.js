@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import {
   Contact,
-  Conversation,
+  ConversationConn,
   getConversations,
   fetchConversationsAction,
 } from '@woozy/conversations';
@@ -99,7 +99,7 @@ export class HomePage extends Component {
     return h(GlobalContainer, [
       h(LeftContainer, this.showContacts()),
       h(CenterContainer, [
-        h(Conversation, {
+        h(ConversationConn, {
           contactID: this.state.selectedContactID,
           contactName: this.state.selectedContactName,
         }),

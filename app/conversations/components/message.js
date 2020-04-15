@@ -62,48 +62,48 @@ export class Message extends Component {
       {
         style: this.state.isUser
           ? {
-              alignSelf: 'flex-end',
-              backgroundColor: backgroundColor,
-            }
+            alignSelf: 'flex-end',
+            backgroundColor: backgroundColor,
+          }
           : {
-              alignSelf: 'flex-start',
-              backgroundColor: backgroundColor,
-            },
+            alignSelf: 'flex-start',
+            backgroundColor: backgroundColor,
+          },
       },
       [
         h(Text, [
           this.state.content,
           !this.state.isUser &&
-          this.state.requestApproval &&
-          this.state.status === 'PENDING'
+            this.state.requestApproval &&
+            this.state.status === 'PENDING'
             ? h(div, [
-                h(
-                  Button,
-                  {
-                    style: {
-                      backgroundColor: 'lightgreen',
-                      borderColor: '#888',
-                      marginRight: '5px',
-                      marginTop: '5px',
-                    },
-                    onClick: () => this.updateMessageStatus('APPROVED'),
+              h(
+                Button,
+                {
+                  style: {
+                    backgroundColor: 'lightgreen',
+                    borderColor: '#888',
+                    marginRight: '5px',
+                    marginTop: '5px',
                   },
-                  ['Approve'],
-                ),
-                h(
-                  Button,
-                  {
-                    style: {
-                      backgroundColor: '#db4054',
-                      borderColor: '#888',
-                      marginRight: '5px',
-                      marginTop: '5px',
-                    },
-                    onClick: () => this.updateMessageStatus('REJECTED'),
+                  onClick: () => this.updateMessageStatus('APPROVED'),
+                },
+                ['Approve'],
+              ),
+              h(
+                Button,
+                {
+                  style: {
+                    backgroundColor: '#db4054',
+                    borderColor: '#888',
+                    marginRight: '5px',
+                    marginTop: '5px',
                   },
-                  ['Deny'],
-                ),
-              ])
+                  onClick: () => this.updateMessageStatus('REJECTED'),
+                },
+                ['Deny'],
+              ),
+            ])
             : this.renderMessageStatus(),
         ]),
       ],

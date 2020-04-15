@@ -20,9 +20,20 @@ export const addConversationsAction = ({ conversations }) => ({
   payload: { conversations },
 });
 
-export const ADD_MESSAGE = 'messages/ADD_MESSAGE';
+export const FETCH_CREATE_MESSAGE = 'conversations/FETCH_CREATE_MESSAGE';
+export const fetchCreateMessageAction = ({ message, conversationId }) => ({
+  type: FETCH_CREATE_MESSAGE,
+  payload: { message, conversationId },
+});
 
-export const addMessage = ({ message }) => ({
-  type: ADD_MESSAGE,
-  payload: { message },
+export const FETCH_MESSAGES = 'conversations/FETCH_MESSAGES';
+export const fetchMessagesAction = ({ conversationId }) => ({
+  type: FETCH_MESSAGES,
+  payload: { conversationId },
+});
+
+export const ADD_MESSAGES = 'conversations/ADD_MESSAGES';
+export const addMessagesAction = ({ messages }) => ({
+  type: ADD_MESSAGES,
+  payload: { messages },
 });

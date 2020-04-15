@@ -1,7 +1,13 @@
 import { h } from 'react-hyperscript-helpers';
 import styled from 'styled-components';
 import { Component } from 'react';
+import { connect } from 'react-redux';
+const mongoose = require('mongoose');
+
+
+
 import { Input, Button } from '@woozy/ui';
+import { fetchCreateMessageAction } from '../actions';
 
 const MessageInputWrapper = styled.div`
   display: flex;
@@ -20,6 +26,7 @@ const ButtonWrapper = styled.div`
 
 export class MessageInput extends Component {
   constructor(props) {
+    console.log('message input props', props)
     super(props);
     this.state = {
       value: '',
@@ -27,9 +34,11 @@ export class MessageInput extends Component {
   }
 
   onMessageSend(event) {
-    this.setState({ value: '' });
     // POST this message
+    const { sendMessage } = this.props;
+    sendMessage(this.state.value);
     event.preventDefault();
+    this.setState({ value: '' });
   }
 
   onMessageType(event) {
@@ -39,6 +48,9 @@ export class MessageInput extends Component {
   handleOnKeyPress(event) {
     if (event.key === 'Enter') {
       // POST this message
+      const { sendMessage } = this.props;
+      sendMessage(this.state.value);
+      event.preventDefault();
       this.setState({ value: '' });
     }
   }
@@ -65,3 +77,15 @@ export class MessageInput extends Component {
     ]);
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  sendMessage: (message) =>
+    dispatch(
+      fetchCreateMessageAction({
+        message,
+        conversationId: mongoose.Types.ObjectId(4),
+      }),
+    ),
+});
+
+export const MessageInputConn = connect(null, mapDispatchToProps)(MessageInput);
