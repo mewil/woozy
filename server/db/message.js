@@ -3,18 +3,20 @@ const mongoose = require('mongoose');
 const WOOZY_MESSAGE_STATUS = {
   NOT_WOOZY: 'not_woozy',
   PENDING: 'pending',
-  APPROVED: 'approve',
+  APPROVED: 'approved',
   DENIED: 'denied',
 };
 
 const messageSchema = new mongoose.Schema({
-  messageId: mongoose.Schema.Types.ObjectId,
-  conversationId: mongoose.Schema.Types.ObjectId,
+  conversationId: { type: mongoose.Schema.Types.ObjectId, ref: 'Conversation' },
   content: String,
-  timestamp: Date,
-  fromUserId: mongoose.Schema.Types.ObjectId,
-  toUserId: mongoose.Schema.Types.ObjectId,
-  woozyApproved: {
+  timestamp: {
+    type: Date,
+    default: Date.now,
+  },
+  fromUserId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  toUserId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  woozyStatus: {
     type: String,
     enum: Object.values(WOOZY_MESSAGE_STATUS),
     default: WOOZY_MESSAGE_STATUS.NOT_WOOZY,
