@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 // import { theme } from '@woozy/theme';
 import { routes } from '../../app/constants';
-import { getNotLoggedInUsers } from '@woozy/user';
+import { getNotLoggedInUsers, getLoggedInUser } from '@woozy/user';
 
 const OuterContainer = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ const ScrollBox = styled.div`
   flex-direction: column;
   padding: 50px;
   height: 400px;
-  width: 300px;
+  width: 400px;
   overflow: auto;
   align-items: center;
   border: 1px solid black;
@@ -39,7 +39,7 @@ const Rows = styled.div`
 const Container = styled.button`
   display: flex;
   margin: 20px;
-  width: 200px;
+  width: 300px;
   flex-direction: column;
   background-color: ${({ theme }) => theme.success};
   padding: 10px;
@@ -48,13 +48,12 @@ const Container = styled.button`
 `;
 
 const FriendButton = styled.button`
-  width: 50px;
+  width: 80px;
   margin-left: 50px;
   margin-right: 50px;
   height: 30px;
   align-items: center;
-  display: flex;
-  flex-direction: row;
+  text-align: center;
 `;
 
 const ContactName = styled.div`
@@ -62,7 +61,7 @@ const ContactName = styled.div`
   font-size: 15px;
   text-align: center;
   padding: 10px;
-  align-items: center:
+  align-items: center;
   display: flex;
 `;
 
@@ -79,25 +78,36 @@ const StyledNavLink = styled(NavLink)`
     margin-left: 15px;
   }
 `;
-const FriendsPage = ({ users }) =>
+const FriendsPage = ({ users, loggedInUser }) =>
   h(OuterContainer, [
     h(Title, 'Choose your Friends'),
     h(
       ScrollBox,
-      users.map(({ username }) =>
-        h(Rows, [h(ContactName, username), h(FriendButton, 'Add')]),
+      Object.keys(users).map((k) =>
+        h(Rows, [
+          h(ContactName, users[k].username),
+          loggedInUser.trustedFriendId &&
+          users[k].id === loggedInUser.trustedFriendId
+            ? h(FriendButton, 'Remove')
+            : h(FriendButton, 'Add'),
+        ]),
       ),
     ),
     h(StyledNavLink, { to: routes.SETTINGS }, [h(Container, 'Done')]),
   ]);
 
-const BlockedPage = ({ users }) =>
+const BlockedPage = ({ users, loggedInUser }) =>
   h(OuterContainer, [
     h(Title, 'Choose people you want to avoid'),
     h(
       ScrollBox,
-      users.map(({ username }) =>
-        h(Rows, [h(ContactName, username), h(FriendButton, 'Add')]),
+      Object.keys(users).map((k) =>
+        h(Rows, [
+          h(ContactName, users[k].username),
+          !Object.values(loggedInUser.avoidingId).includes(users[k].id)
+            ? h(FriendButton, 'Add')
+            : h(FriendButton, 'Remove'),
+        ]),
       ),
     ),
     h(StyledNavLink, { to: routes.SETTINGS }, [h(Container, 'Done')]),
@@ -105,6 +115,7 @@ const BlockedPage = ({ users }) =>
 
 const mapStateToProps = (state) => ({
   users: getNotLoggedInUsers(state),
+  loggedInUser: getLoggedInUser(state),
 });
 
 export const FriendPageConn = connect(mapStateToProps)(FriendsPage);
