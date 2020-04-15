@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 // import { theme } from '@woozy/theme';
 import { routes } from '../../app/constants';
 
-import { getNotLoggedInUsers, getLoggedInUser } from '@woozy/user';
+import { getNotLoggedInUsers } from '@woozy/user';
+
 
 const OuterContainer = styled.div`
   display: flex;
@@ -106,7 +107,6 @@ const BlockedPage = ({ users }) =>
 
 const mapStateToProps = (state) => ({
   users: getNotLoggedInUsers(state),
-  loggedInUser: getLoggedInUser(state),
 });
 
 export const FriendPageConn = connect(mapStateToProps)(FriendsPage);
