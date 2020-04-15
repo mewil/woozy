@@ -9,7 +9,7 @@ export const conversations = (state = {}, action = {}) => {
       const newConversations = values(get(payload, 'conversations', {})).reduce(
         (results, p) => ({
           ...results,
-          [p.conversationId]: p,
+          [p.id]: p,
         }),
         {},
       );

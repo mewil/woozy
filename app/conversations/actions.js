@@ -5,13 +5,9 @@ export const fetchConversationsAction = () => ({
 
 export const FETCH_CREATE_CONVERSATION =
   'conversations/FETCH_CREATE_CONVERSATION';
-export const fetchCreateConversationAction = ({
-  caption,
-  imageUrl,
-  imageType,
-}) => ({
+export const fetchCreateConversationAction = ({ userId }) => ({
   type: FETCH_CREATE_CONVERSATION,
-  payload: { caption, imageUrl, imageType },
+  payload: { userId },
 });
 
 export const ADD_CONVERSATIONS = 'conversations/ADD_CONVERSATIONS';
