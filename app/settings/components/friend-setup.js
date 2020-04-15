@@ -18,7 +18,7 @@ const ScrollBox = styled.div`
   flex-direction: column;
   padding: 50px;
   height: 400px;
-  width: 300px;
+  width: 400px;
   overflow: auto;
   align-items: center;
   border: 1px solid black;
@@ -39,7 +39,7 @@ const Rows = styled.div`
 const Container = styled.button`
   display: flex;
   margin: 20px;
-  width: 200px;
+  width: 300px;
   flex-direction: column;
   background-color: ${({ theme }) => theme.success};
   padding: 10px;
@@ -48,13 +48,12 @@ const Container = styled.button`
 `;
 
 const FriendButton = styled.button`
-  width: 50px;
+  width: 80px;
   margin-left: 50px;
   margin-right: 50px;
   height: 30px;
   align-items: center;
-  display: flex;
-  flex-direction: row;
+  text-align: center;
 `;
 
 const ContactName = styled.div`
@@ -62,7 +61,7 @@ const ContactName = styled.div`
   font-size: 15px;
   text-align: center;
   padding: 10px;
-  align-items: center:
+  align-items: center;
   display: flex;
 `;
 
@@ -88,9 +87,9 @@ const FriendsPage = ({ users, loggedInUser }) =>
         h(Rows, [
           h(ContactName, users[k].username),
           loggedInUser.trustedFriendId &&
-          users[k].id !== loggedInUser.trustedFriendId
-            ? h(FriendButton, 'Add')
-            : h(FriendButton, 'Remove'),
+          users[k].id === loggedInUser.trustedFriendId
+            ? h(FriendButton, 'Remove')
+            : h(FriendButton, 'Add'),
         ]),
       ),
     ),
