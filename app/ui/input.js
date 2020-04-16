@@ -26,10 +26,10 @@ const InputEl = styled.input`
   box-sizing: border-box;
   border: solid 1px
     ${({ theme, success, error }) => {
-    if (error) return theme.danger;
-    if (success) return theme.success;
-    return theme.lightGray;
-  }};
+      if (error) return theme.danger;
+      if (success) return theme.success;
+      return theme.lightGray;
+    }};
   outline: none;
   &:focus {
     border-color: ${({ theme }) => theme.info};
@@ -100,10 +100,10 @@ export const Input = ({
     [
       required
         ? h(Label, [
-          required
-            ? h(RequiredLabel, { error: showErrorDropdown }, 'Required')
-            : null,
-        ])
+            required
+              ? h(RequiredLabel, { error: showErrorDropdown }, 'Required')
+              : null,
+          ])
         : null,
       h(Row, [
         h(InputEl, {

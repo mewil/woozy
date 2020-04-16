@@ -7,8 +7,7 @@ import { Message } from './message';
 import { Headline } from './contact-headline';
 import { MessageInputConn } from './message-input';
 import { getMessages } from '../selectors';
-import { fetchMessagesAction } from '../actions'
-
+import { fetchMessagesAction } from '../actions';
 
 const ConversationContainer = styled.div`
   display: flex;
@@ -26,16 +25,14 @@ export class Conversation extends Component {
     const messages = Object.values(this.props.messages).sort(
       (a, b) =>
         new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
-    )
+    );
     return div([
       h(Headline, this.props),
-      messages.length > 0 ?
-        h(
-          ConversationContainer,
-          messages.map((message, key) =>
-            h(Message, { ...message, key }),
-          ) ,
-        )
+      messages.length > 0
+        ? h(
+            ConversationContainer,
+            messages.map((message, key) => h(Message, { ...message, key })),
+          )
         : null,
       h(MessageInputConn, {
         conversationId: this.props.conversationId,
@@ -52,4 +49,7 @@ const mapDispatchToProps = (dispatch, { conversationId }) => ({
   fetchMessages: () => dispatch(fetchMessagesAction({ conversationId })),
 });
 
-export const ConversationConn = connect(mapStateToProps, mapDispatchToProps)(Conversation);
+export const ConversationConn = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Conversation);

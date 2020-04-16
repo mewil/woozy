@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 
-
 import { Input, Button } from '@woozy/ui';
 import { fetchCreateMessageAction } from '../actions';
 

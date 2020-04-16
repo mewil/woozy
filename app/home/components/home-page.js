@@ -72,7 +72,9 @@ export class HomePage extends Component {
       closeModal,
       fetchCreateConversation,
     } = this.props;
-    const { selectedConversationId = get(head(conversations), 'id') } = this.state;
+    const {
+      selectedConversationId = get(head(conversations), 'id'),
+    } = this.state;
     return h(Fragment, [
       h(ModalOverlay, { open: showNewConversationModal }, [
         h(NewConversationModal, {
@@ -87,27 +89,28 @@ export class HomePage extends Component {
         h(LeftContainer, [
           !isEmpty(conversations)
             ? conversations.map(({ id, user = {}, lastMessage = {} }, key) => {
-              const { username } = user;
-              const { content } = lastMessage;
-              return h(Contact, {
-                key,
-                onClick: () =>
-                  this.setState({
-                    selectedConversationId: id,
-                  }),
-                selected: selectedConversationId === id,
-                username,
-                lastMessage: content,
-              });
-            })
+                const { username } = user;
+                const { content } = lastMessage;
+                return h(Contact, {
+                  key,
+                  onClick: () =>
+                    this.setState({
+                      selectedConversationId: id,
+                    }),
+                  selected: selectedConversationId === id,
+                  username,
+                  lastMessage: content,
+                });
+              })
             : 'No Conversations',
         ]),
-        this.state.selectedConversationId ?
-          h(CenterContainer, [
-            h(ConversationConn, {
-              conversationId: this.state.selectedConversationId,
-            }),
-          ]) : null,
+        this.state.selectedConversationId
+          ? h(CenterContainer, [
+              h(ConversationConn, {
+                conversationId: this.state.selectedConversationId,
+              }),
+            ])
+          : null,
       ]),
     ]);
   }
