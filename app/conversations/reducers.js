@@ -7,9 +7,9 @@ export const conversations = (state = {}, action = {}) => {
   switch (type) {
     case ADD_CONVERSATIONS: {
       const newConversations = values(get(payload, 'conversations', {})).reduce(
-        (results, p) => ({
+        (results, c) => ({
           ...results,
-          [p.id]: p,
+          [c.id]: c,
         }),
         {},
       );
@@ -28,8 +28,13 @@ export const messages = (state = {}, action = {}) => {
   const { type, payload } = action;
   switch (type) {
     case ADD_MESSAGES: {
-      const newMessages = values(get(payload, 'messages', {}));
-      console.log('new messages', newMessages)
+      const newMessages = values(get(payload, 'messages', {})).reduce(
+        (results, m) => ({
+          ...results,
+          [m.id]: m,
+        }),
+        {},
+      );
       return {
         ...state,
         ...newMessages,

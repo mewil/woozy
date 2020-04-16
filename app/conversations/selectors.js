@@ -5,13 +5,6 @@ import { getNotLoggedInUsers, getUsers, getAuthUserId } from '@woozy/user';
 
 export const getConversations = (state) => get(state, 'conversations', {});
 export const getMessages = (state) => get(state, 'messages', {});
-export const getRenderedMessages = (state, conversationId) =>
-  Object.values(getMessages(state))
-    .map(({ messages }) => Object.values(messages))
-    .reduce((prev, curr) => prev.concat(curr), [])
-    .filter((item) => item.conversationId === conversationId);
-
-// get(state, 'messages', {});
 
 export const getConversationParticipants = (state) =>
   Object.values(getConversations(state))

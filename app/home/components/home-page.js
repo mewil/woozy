@@ -73,7 +73,6 @@ export class HomePage extends Component {
       fetchCreateConversation,
     } = this.props;
     const { selectedConversationId = get(head(conversations), 'id') } = this.state;
-    console.log('props from home page:', this.props, 'state from home page:', this.state)
     return h(Fragment, [
       h(ModalOverlay, { open: showNewConversationModal }, [
         h(NewConversationModal, {
@@ -103,11 +102,12 @@ export class HomePage extends Component {
             })
             : 'No Conversations',
         ]),
-        h(CenterContainer, [
-          h(ConversationConn, {
-            conversationId: this.state.selectedConversationId,
-          }),
-        ]),
+        this.state.selectedConversationId ?
+          h(CenterContainer, [
+            h(ConversationConn, {
+              conversationId: this.state.selectedConversationId,
+            }),
+          ]) : null,
       ]),
     ]);
   }

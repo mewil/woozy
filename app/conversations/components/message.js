@@ -41,16 +41,16 @@ export class Message extends Component {
   }
 
   renderMessageStatus() {
-    if (this.state.requestApproval) {
-      return h(MessageStatus, [WOOZY_STATES[this.state.status]]);
+    if (this.props.requestApproval) {
+      return h(MessageStatus, [WOOZY_STATES[this.props.status]]);
     }
     return null;
   }
 
   render() {
     let backgroundColor = '#EEE';
-    if (this.state.isUser) {
-      if (!this.state.requestApproval || this.state.status === 'APPROVED') {
+    if (this.props.isUser) {
+      if (!this.props.requestApproval || this.state.status === 'APPROVED') {
         backgroundColor = 'lightgreen';
       } else if (this.state.status === 'PENDING') {
         backgroundColor = 'lightgoldenrodyellow';
@@ -61,7 +61,7 @@ export class Message extends Component {
     return h(
       Container,
       {
-        style: this.state.isUser
+        style: this.props.isUser
           ? {
             alignSelf: 'flex-end',
             backgroundColor: backgroundColor,
@@ -73,9 +73,9 @@ export class Message extends Component {
       },
       [
         h(Text, [
-          this.state.content,
-          !this.state.isUser &&
-            this.state.requestApproval &&
+          this.props.content,
+          !this.props.isUser &&
+            this.props.requestApproval &&
             this.state.status === 'PENDING'
             ? h(div, [
               h(

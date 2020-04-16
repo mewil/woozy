@@ -2,8 +2,6 @@ import { h } from 'react-hyperscript-helpers';
 import styled from 'styled-components';
 import { Component } from 'react';
 import { connect } from 'react-redux';
-const mongoose = require('mongoose');
-
 
 
 import { Input, Button } from '@woozy/ui';
@@ -26,7 +24,6 @@ const ButtonWrapper = styled.div`
 
 export class MessageInput extends Component {
   constructor(props) {
-    console.log('message input props', props)
     super(props);
     this.state = {
       value: '',
@@ -83,8 +80,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(
       fetchCreateMessageAction({
         message,
-        conversationId: conversationId,
-        // trustedFriendConversationId: mongoose.Types.ObjectId(4),
+        conversationId,
       }),
     ),
 });
