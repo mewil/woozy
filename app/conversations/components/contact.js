@@ -8,8 +8,13 @@ const Container = styled.div`
   width: 100%;
 `;
 
-export const Contact = ({ onClick, active, contactName, lastMessage }) =>
-  h(SelectedConversationStyle, { isSelected: active, onClick }, [
-    h(Body, contactName),
+export const Contact = ({
+  onClick,
+  selected,
+  username = '',
+  lastMessage = '',
+}) =>
+  h(Container, { selected, onClick }, [
+    h(Body, username),
     h(BodyFaded, lastMessage),
   ]);
