@@ -10,9 +10,24 @@ router.get('/', (_req, res) => {
       $lookup: {
         from: 'messages',
         as: 'messages',
-        let: { cId: '$_id' },
+        let: { conversation: '$_id' },
         pipeline: [
-          { $match: { $expr: { $eq: ['$conversationId', '$$cId'] } } },
+          {
+            $match: {
+              $or: [
+                {
+                  $expr: {
+                    $eq: ['$conversationId', '$$conversation'],
+                  },
+                },
+                {
+                  $expr: {
+                    $eq: ['$trustedFriendConversationId', '$$conversation'],
+                  },
+                },
+              ],
+            },
+          },
           { $sort: { timestamp: -1 } },
           { $limit: 1 },
         ],

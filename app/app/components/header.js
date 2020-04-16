@@ -12,21 +12,18 @@ import { getAuthUserIsLoggedIn } from '@woozy/user';
 import { routes } from '../constants';
 
 const Wrapper = styled.div`
-  margin: 0 px 16%;
-  ${devices.small`
-        margin: 0px 8%;
-    `};
+  z-index: 1;
+  padding: 15px 8%;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  padding-top: 15px
-  padding-bottom: 15px
   z-index: 100;
   display: flex;
   height: 80px;
   align-items: center;
   justify-content: flex-start;
+  box-shadow: 1px 2px 4px lightgray;
 `;
 
 const NavContainer = styled.div`
@@ -69,7 +66,10 @@ const Header = ({ loggedIn }) =>
       h(HeaderNavLink, { to: routes.HOME }, 'Woozy'),
       h(NavContainer, [
         loggedIn
-          ? h(StyledNavLink, { to: routes.SETTINGS }, 'Settings')
+          ? h(Fragment, [
+              h(StyledNavLink, { to: routes.SETTINGS }, 'SETTINGS'),
+              h(StyledNavLink, { to: routes.NEW }, 'NEW'),
+            ])
           : h(StyledNavLink, { to: routes.LOGIN }, 'LOGIN'),
       ]),
     ]),

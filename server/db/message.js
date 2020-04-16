@@ -9,6 +9,10 @@ const WOOZY_MESSAGE_STATUS = {
 
 const messageSchema = new mongoose.Schema({
   conversationId: { type: mongoose.Schema.Types.ObjectId, ref: 'Conversation' },
+  trustedFriendConversationId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Conversation',
+  },
   content: String,
   timestamp: {
     type: Date,

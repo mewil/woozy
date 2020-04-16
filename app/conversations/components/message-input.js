@@ -49,7 +49,7 @@ export class MessageInput extends Component {
     if (event.key === 'Enter') {
       // POST this message
       const { sendMessage } = this.props;
-      sendMessage(this.state.value);
+      sendMessage(this.state.value, this.props.conversationId);
       event.preventDefault();
       this.setState({ value: '' });
     }
@@ -79,11 +79,12 @@ export class MessageInput extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  sendMessage: (message) =>
+  sendMessage: (message, conversationId) =>
     dispatch(
       fetchCreateMessageAction({
         message,
-        conversationId: mongoose.Types.ObjectId(4),
+        conversationId: conversationId,
+        // trustedFriendConversationId: mongoose.Types.ObjectId(4),
       }),
     ),
 });

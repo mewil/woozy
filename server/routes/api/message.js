@@ -5,7 +5,12 @@ const Message = require('../../db/message');
 
 // GET all messages given a conversation id
 router.get('/:conversation', (req, res) => {
-  Message.find({ conversationId: req.params.conversation })
+  Message.find({
+    $or: [
+      { conversationId: req.params.conversation },
+      { trustedFriendConversationId: req.params.conversation },
+    ],
+  })
     .sort({ timestamp: -1 })
     .limit(5)
     .exec((err, messages) => {
