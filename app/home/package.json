@@ -9,6 +9,8 @@
   "author": "",
   "license": "GPL-3.0",
   "dependencies": {
-    "@woozy/conversations": "1.0.0"
+    "@woozy/conversations": "1.0.0",
+    "@woozy/ui": "1.0.0",
+    "@woozy/theme": "1.0.0"
   }
 }

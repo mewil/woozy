@@ -28,7 +28,8 @@
         "express": "^4.15.2",
         "mongoose": "^5.9.7",
         "mongoose-sanitizer-plugin": "^1.1.0",
-        "morgan": "^1.10.0"
+        "morgan": "^1.10.0",
+        "reselect": "^4.0.0"
     },
     "devDependencies": {
         "@babel/core": "^7.0.0",
