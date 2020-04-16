@@ -17,6 +17,7 @@ module.exports = {
     'react/no-multi-comp': 0,
     'react/sort-comp': 0,
     'react/prop-types': 0,
+    'react/no-did-update-set-state': 0,
     'react/forbid-prop-types': [2, { forbid: ['any', 'array'] }],
     camelcase: 0,
     'import/no-extraneous-dependencies': 0,

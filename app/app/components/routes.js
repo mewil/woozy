@@ -1,7 +1,7 @@
 import { h } from 'react-hyperscript-helpers';
 import { Route, Switch, Redirect } from 'react-router';
 
-import { HomePageConn } from '@woozy/home';
+import { ConversationPageConn } from '@woozy/conversations';
 import {
   SettingPage,
   SetupPage,
@@ -21,7 +21,7 @@ export const Routes = ({ loggedIn }) =>
           h(Route, {
             exact: true,
             path: routes.HOME,
-            component: HomePageConn,
+            component: ConversationPageConn,
           }),
           h(Route, {
             exact: true,
@@ -48,7 +48,7 @@ export const Routes = ({ loggedIn }) =>
             path: routes.BLOCKED,
             component: BlockedPageConn,
           }),
-          h(Route, { component: HomePageConn }),
+          h(Route, { component: ConversationPageConn }),
         ]
       : [
           h(Route, {

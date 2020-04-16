@@ -12,7 +12,7 @@ router.get('/:conversation', (req, res) => {
     ],
   })
     .sort({ timestamp: -1 })
-    .limit(5)
+    .limit(25)
     .exec((err, messages) => {
       if (err) {
         res.status(500).send({

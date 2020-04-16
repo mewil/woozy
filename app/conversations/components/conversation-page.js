@@ -5,18 +5,22 @@ import styled from 'styled-components';
 import { get, head, isEmpty } from 'lodash';
 import { replace } from 'connected-react-router';
 
-import {
-  Contact,
-  ConversationConn,
-  getConversationsWithUsers,
-  fetchConversationsAction,
-  getUsersNotInConversations,
-  fetchCreateConversationAction,
-  getConversationParticipants,
-} from '@woozy/conversations';
 import { getTheme } from '@woozy/theme';
+import { getIsFriendContact, getIsAvoidedContact } from '@woozy/user';
 
+import { Contact } from './contact';
+import { ConversationConn } from './conversation';
+import { Headline } from './contact-headline';
+import { MessageInputConn } from './message-input';
 import { NewConversationModal } from './new-conversation-modal';
+import {
+  getConversationsWithUserAndMessages,
+  getUsersNotInConversations,
+} from '../selectors';
+import {
+  fetchConversationsAction,
+  fetchCreateConversationAction,
+} from '../actions';
 
 const GlobalContainer = styled.div`
   display: flex;
@@ -29,11 +33,12 @@ const LeftContainer = styled.div`
   align-items: flex-start;
   flex-direction: column;
   width: 25%;
+  box-shadow: 1px 2px 4px lightgray;
+  z-index: 80;
 `;
 
 const CenterContainer = styled.div`
   width: 75%;
-  background-color: white;
   text-align: center;
   overflow: scroll;
 `;
@@ -49,18 +54,22 @@ const ModalOverlay = styled.div`
   background: #ffffff55;
 `;
 
-export class HomePage extends Component {
+export class ConversationPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedConversationId: null,
+      conversationId: undefined,
     };
   }
 
   componentDidMount() {
     const { fetchConversations } = this.props;
     fetchConversations();
-    // setInterval(fetchConversations, 500);
+    this.interval = setInterval(fetchConversations, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   render() {
@@ -71,10 +80,13 @@ export class HomePage extends Component {
       theme,
       closeModal,
       fetchCreateConversation,
+      isFriendContact,
+      isAvoidedContact,
     } = this.props;
     const {
-      selectedConversationId = get(head(conversations), 'id'),
+      conversationId = get(head(Object.values(conversations)), 'id', null),
     } = this.state;
+    const currentConversation = get(conversations, conversationId);
     return h(Fragment, [
       h(ModalOverlay, { open: showNewConversationModal }, [
         h(NewConversationModal, {
@@ -88,41 +100,53 @@ export class HomePage extends Component {
       h(GlobalContainer, [
         h(LeftContainer, [
           !isEmpty(conversations)
-            ? conversations.map(({ id, user = {}, lastMessage = {} }, key) => {
-                const { username } = user;
-                const { content } = lastMessage;
-                return h(Contact, {
-                  key,
-                  onClick: () =>
-                    this.setState({
-                      selectedConversationId: id,
-                    }),
-                  selected: selectedConversationId === id,
-                  username,
-                  lastMessage: content,
-                });
-              })
+            ? Object.values(conversations).map(
+                ({ id, user = {}, lastMessage = {} }, key) => {
+                  const { username } = user;
+                  const { content, timestamp } = lastMessage;
+                  return h(Contact, {
+                    key,
+                    onClick: () =>
+                      this.setState({
+                        conversationId: id,
+                      }),
+                    selected: conversationId === id,
+                    username,
+                    lastMessage: content,
+                    timestamp,
+                  });
+                },
+              )
             : 'No Conversations',
         ]),
-        this.state.selectedConversationId
-          ? h(CenterContainer, [
-              h(ConversationConn, {
-                conversationId: this.state.selectedConversationId,
-              }),
-            ])
-          : null,
+        h(CenterContainer, [
+          h(Headline, {
+            username: get(currentConversation, 'user.username', ''),
+            isFriendContact,
+            isAvoidedContact,
+          }),
+          conversationId
+            ? h(ConversationConn, {
+                ...currentConversation,
+              })
+            : null,
+          h(MessageInputConn, {
+            conversationId,
+          }),
+        ]),
       ]),
     ]);
   }
 }
 
 const mapStateToProps = (state) => ({
-  conversations: getConversationsWithUsers(state),
-  parts: getConversationParticipants(state),
+  conversations: getConversationsWithUserAndMessages(state),
   usersNotInConversations: getUsersNotInConversations(state),
   showNewConversationModal:
     get(state, 'router.location.pathname', '/') === '/new',
   theme: getTheme(state),
+  isFriendContact: getIsFriendContact(state),
+  isAvoidedContact: getIsAvoidedContact(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -132,7 +156,7 @@ const mapDispatchToProps = (dispatch) => ({
   closeModal: () => dispatch(replace('/')),
 });
 
-export const HomePageConn = connect(
+export const ConversationPageConn = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(HomePage);
+)(ConversationPage);

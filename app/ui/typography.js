@@ -32,6 +32,7 @@ export const Body = styled(Base)`
 `;
 
 export const BodyFaded = styled(Body)`
+  font-size: 13px;
   color: ${({ theme }) => theme.foregroundSecondary};
 `;
 

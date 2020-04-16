@@ -10,7 +10,11 @@ import { getTheme } from '@woozy/theme';
 import { HeaderConn } from './header';
 
 const Container = styled.div`
-  margin: 80px auto 0 auto;
+  position: absolute;
+  top: 80px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
 `;
 
 const Navigator = ({ theme, children }) =>

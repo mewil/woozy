@@ -9,7 +9,6 @@ import { fetchCreateMessageAction } from '../actions';
 const MessageInputWrapper = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;
   flex-direction: row;
 `;
 const InputWrapper = styled.div`
@@ -25,39 +24,37 @@ export class MessageInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '',
+      content: '',
     };
   }
 
-  onMessageSend(event) {
-    // POST this message
+  sendMessage() {
     const { sendMessage } = this.props;
-    sendMessage(this.state.value);
-    event.preventDefault();
-    this.setState({ value: '' });
+    const { content } = this.state;
+    if (content !== '') {
+      sendMessage(content);
+      this.setState({ content: '' });
+    }
   }
 
   onMessageType(event) {
-    this.setState({ value: event.target.value });
+    this.setState({ content: event.target.value });
   }
 
   handleOnKeyPress(event) {
     if (event.key === 'Enter') {
-      // POST this message
-      const { sendMessage } = this.props;
-      sendMessage(this.state.value, this.props.conversationId);
-      event.preventDefault();
-      this.setState({ value: '' });
+      this.sendMessage();
     }
   }
 
   render() {
+    const { content } = this.state;
     return h(MessageInputWrapper, [
       h(InputWrapper, [
         h(Input, {
           onChange: (event) => this.onMessageType(event),
           onKeyPress: (event) => this.handleOnKeyPress(event),
-          value: this.state.value,
+          value: content,
           type: 'text',
         }),
       ]),
@@ -65,7 +62,8 @@ export class MessageInput extends Component {
         h(
           Button,
           {
-            onClick: (event) => this.onMessageSend(event),
+            hollow: content === '',
+            onClick: () => this.sendMessage(),
           },
           'Send',
         ),
@@ -74,8 +72,8 @@ export class MessageInput extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  sendMessage: (message, conversationId) =>
+const mapDispatchToProps = (dispatch, { conversationId }) => ({
+  sendMessage: (message) =>
     dispatch(
       fetchCreateMessageAction({
         message,
