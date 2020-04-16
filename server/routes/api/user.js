@@ -78,11 +78,11 @@ router.put('/:id', (req, res) => {
             message: err,
           });
         } else {
-          user["avoidingId"].push(req.params.id);
+          user.avoidingId.push(req.params.id);
           res.send({
             status: true,
             message: 'successfully updated avoided contacts',
-            data: user["avoidingId"],
+            data: user.avoidingId,
           });
         }
       },
