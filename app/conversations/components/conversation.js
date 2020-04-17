@@ -3,6 +3,8 @@ import { h } from 'react-hyperscript-helpers';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 
+import { getAuthUser } from '@woozy/user';
+
 import { Message } from './message';
 import { fetchMessagesAction } from '../actions';
 
@@ -24,15 +26,28 @@ export class Conversation extends Component {
   }
 
   render() {
-    const { messages = [] } = this.props;
+    const { messages = [], loggedInUser } = this.props;
     return h(ConversationContainer, [
-      messages.map((message, key) => h(Message, { ...message, key })),
+      messages.map((message, key) =>
+        h(Message, {
+          ...message,
+          key,
+          isUser: loggedInUser.id === message.fromUserId,
+        }),
+      ),
     ]);
   }
 }
+
+const mapStateToProps = (state) => ({
+  loggedInUser: getAuthUser(state),
+});
 
 const mapDispatchToProps = (dispatch, { id }) => ({
   fetchMessages: () => dispatch(fetchMessagesAction({ conversationId: id })),
 });
 
-export const ConversationConn = connect(null, mapDispatchToProps)(Conversation);
+export const ConversationConn = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Conversation);

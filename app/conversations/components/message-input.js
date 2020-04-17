@@ -72,12 +72,13 @@ export class MessageInput extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch, { conversationId }) => ({
+const mapDispatchToProps = (dispatch, { id, user }) => ({
   sendMessage: (message) =>
     dispatch(
       fetchCreateMessageAction({
         message,
-        conversationId,
+        conversationId: id,
+        toUserId: user.id,
       }),
     ),
 });

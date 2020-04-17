@@ -17,9 +17,13 @@ export const addConversationsAction = ({ conversations }) => ({
 });
 
 export const FETCH_CREATE_MESSAGE = 'conversations/FETCH_CREATE_MESSAGE';
-export const fetchCreateMessageAction = ({ message, conversationId }) => ({
+export const fetchCreateMessageAction = ({
+  message,
+  conversationId,
+  toUserId,
+}) => ({
   type: FETCH_CREATE_MESSAGE,
-  payload: { message, conversationId },
+  payload: { message, conversationId, toUserId },
 });
 
 export const FETCH_MESSAGES = 'conversations/FETCH_MESSAGES';

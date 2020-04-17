@@ -43,13 +43,19 @@ export function* onFetchCreateConversation({ payload: { userId } }) {
 }
 
 export function* onFetchCreateMessage({
-  payload: { message, conversationId },
+  payload: { message, conversationId, toUserId },
 }) {
   const url = '/api/message/';
+  const authUserId = yield select(getAuthUserId);
   const result = yield call(apiFetch, {
     url,
     method: 'POST',
-    body: { content: message, conversationId },
+    body: {
+      content: message,
+      conversationId,
+      toUserId,
+      fromUserId: authUserId,
+    },
   });
 
   if (responseHasError(result)) return;

@@ -131,7 +131,7 @@ export class ConversationPage extends Component {
               })
             : null,
           h(MessageInputConn, {
-            conversationId,
+            ...currentConversation,
           }),
         ]),
       ]),
