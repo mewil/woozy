@@ -28,7 +28,8 @@
         "express": "^4.15.2",
         "mongoose": "^5.9.7",
         "mongoose-sanitizer-plugin": "^1.1.0",
-        "morgan": "^1.10.0"
+        "morgan": "^1.10.0",
+        "reselect": "^4.0.0"
     },
     "devDependencies": {
         "reselect": "^4.0.0",
@@ -67,6 +68,7 @@
         "lodash": "^4.17.4",
         "mime": "^2.4.4",
         "mkdirp": "^1.0.4",
+        "moment": "^2.24.0",
         "postcss-loader": "^3.0.0",
         "prettier": "2.0.2",
         "prettier-eslint": "^9.0.1",

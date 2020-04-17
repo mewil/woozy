@@ -1,24 +1,43 @@
-import { h, div } from 'react-hyperscript-helpers';
+import { h } from 'react-hyperscript-helpers';
 import styled from 'styled-components';
-import { Body } from '@woozy/ui';
+import { Subtitle, Button } from '@woozy/ui';
 
 const ConversationHeaderWrapper = styled.div`
-    width: 100%;
-    height: 80px;
-    background-color: 
-    outline: solid;
-    outline-width: thin;
-    outline-color: gray;
+  height: 70px;
+  z-index: 10;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  padding: 10px;
+  position: absolute;
+  width: 75%;
+  box-shadow: 1px 2px 4px lightgray;
+  * {
+    margin: 0px 10px;
+  }
 `;
 
 const contactStatus = (isFriendContact, isAvoidedContact) => {
-  if (isFriendContact) return 'Woozy Friend';
-  else if (isAvoidedContact) return 'Avoiding';
-  return '';
+  if (isFriendContact) {
+    return h(
+      Button,
+      { hollow: true, success: true, style: { pointerEvents: 'none' } },
+      ['Trusted Friend'],
+    );
+  } else if (isAvoidedContact) {
+    return h(
+      Button,
+      { hollow: true, danger: true, style: { pointerEvents: 'none' } },
+      ['Avoided Contact'],
+    );
+  }
+  return null;
 };
 
-export const Headline = ({ contactName, isFriendContact, isAvoidedContact }) =>
+export const Headline = ({ username, isFriendContact, isAvoidedContact }) =>
   h(ConversationHeaderWrapper, [
-    h(Body, contactName),
-    h(div, contactStatus(isFriendContact, isAvoidedContact)),
+    h(Subtitle, username),
+    contactStatus(isFriendContact, isAvoidedContact),
   ]);

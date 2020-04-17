@@ -31,7 +31,6 @@ const combine = (modules = [], name = '') => {
 
 export const packages = use([
   require('@woozy/app'),
-  require('@woozy/home'),
   require('@woozy/theme'),
   require('@woozy/user'),
   require('@woozy/conversations'),

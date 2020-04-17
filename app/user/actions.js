@@ -20,3 +20,9 @@ export const addUsersAction = ({ users }) => ({
   type: ADD_USERS,
   payload: { users },
 });
+
+export const FETCH_UPDATE_USER = 'user/FETCH_UPDATE_USER';
+export const fetchUpdateUserAction = ({ user }) => ({
+  type: FETCH_UPDATE_USER,
+  payload: { user },
+});

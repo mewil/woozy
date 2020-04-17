@@ -5,7 +5,11 @@ import { get } from 'lodash';
 import { apiFetch, responseHasError } from '@woozy/fetch';
 import { getAuthUserId } from '@woozy/user';
 
-import { addConversationsAction } from './actions';
+import {
+  addConversationsAction,
+  fetchMessagesAction,
+  addMessagesAction,
+} from './actions';
 import { replace } from 'connected-react-router';
 
 export function* onFetchConversations() {
@@ -36,4 +40,36 @@ export function* onFetchCreateConversation({ payload: { userId } }) {
       replace('/'),
     ]),
   );
+}
+
+export function* onFetchCreateMessage({
+  payload: { message, conversationId, toUserId },
+}) {
+  const url = '/api/message/';
+  const authUserId = yield select(getAuthUserId);
+  const result = yield call(apiFetch, {
+    url,
+    method: 'POST',
+    body: {
+      content: message,
+      conversationId,
+      toUserId,
+      fromUserId: authUserId,
+    },
+  });
+
+  if (responseHasError(result)) return;
+  yield put(fetchMessagesAction({ conversationId }));
+}
+
+export function* onFetchMessages({ payload: { conversationId } }) {
+  const url = `/api/message/${conversationId}`;
+  const result = yield call(apiFetch, {
+    url,
+    method: 'GET',
+  });
+
+  if (responseHasError(result)) return;
+  const messages = get(result, 'data', {});
+  yield put(addMessagesAction({ messages }));
 }

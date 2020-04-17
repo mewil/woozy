@@ -1,67 +1,97 @@
 import { h } from 'react-hyperscript-helpers';
 import styled from 'styled-components';
 import { Component } from 'react';
+import { connect } from 'react-redux';
+
 import { Input, Button } from '@woozy/ui';
+import { fetchCreateMessageAction } from '../actions';
 
-const MessageInputWrapper = styled.div`
+const Container = styled.div`
   display: flex;
-  width: 100%;
-  height: 100%;
+  z-index: 10;
   flex-direction: row;
-`;
-const InputWrapper = styled.div`
-  width: 80%;
-  align-items: flex-end;
+  box-shadow: 1px 2px 4px lightgray;
+  background-color: white;
+  width: 75%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 8px;
+  justify-content: space-between;
 `;
 
-const ButtonWrapper = styled.div`
-  width: 20%;
+const InputContainer = styled.div`
+  width: 75%;
+  > {
+    width: 100%;
+  }
+  input {
+    width: 100%;
+  }
 `;
-
 export class MessageInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '',
+      content: '',
     };
   }
 
-  onMessageSend(event) {
-    this.setState({ value: '' });
-    // POST this message
-    event.preventDefault();
+  sendMessage() {
+    const { sendMessage } = this.props;
+    const { content } = this.state;
+    if (content !== '') {
+      sendMessage(content);
+      this.setState({ content: '' });
+    }
   }
 
   onMessageType(event) {
-    this.setState({ value: event.target.value });
+    this.setState({ content: event.target.value });
   }
 
   handleOnKeyPress(event) {
     if (event.key === 'Enter') {
-      // POST this message
-      this.setState({ value: '' });
+      this.sendMessage();
     }
   }
 
   render() {
-    return h(MessageInputWrapper, [
-      h(InputWrapper, [
+    const { content } = this.state;
+    return h(Container, [
+      h(InputContainer, [
         h(Input, {
           onChange: (event) => this.onMessageType(event),
           onKeyPress: (event) => this.handleOnKeyPress(event),
-          value: this.state.value,
+          value: content,
           type: 'text',
+          placeholder: 'Type a message...',
         }),
       ]),
-      h(ButtonWrapper, [
-        h(
-          Button,
-          {
-            onClick: (event) => this.onMessageSend(event),
+      h(
+        Button,
+        {
+          hollow: content === '',
+          onClick: () => this.sendMessage(),
+          style: {
+            height: '48px',
           },
-          'Send',
-        ),
-      ]),
+        },
+        'Send',
+      ),
     ]);
   }
 }
+
+const mapDispatchToProps = (dispatch, { id, user }) => ({
+  sendMessage: (message) =>
+    dispatch(
+      fetchCreateMessageAction({
+        message,
+        conversationId: id,
+        toUserId: user.id,
+      }),
+    ),
+});
+
+export const MessageInputConn = connect(null, mapDispatchToProps)(MessageInput);

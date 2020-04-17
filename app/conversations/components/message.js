@@ -1,4 +1,3 @@
-import { Component } from 'react';
 import { h, div } from 'react-hyperscript-helpers';
 import styled from 'styled-components';
 
@@ -27,87 +26,67 @@ const MessageStatus = styled.p`
   margin: 4px 0px;
 `;
 
-export class Message extends Component {
-  constructor(props) {
-    super(props);
+const messageStatus = (requestApproval, status) =>
+  requestApproval ? h(MessageStatus, [WOOZY_STATES[status]]) : null;
 
-    this.state = {
-      ...props,
-    };
-  }
-
-  updateMessageStatus(newStatus) {
-    this.setState({ status: newStatus });
-  }
-
-  renderMessageStatus() {
-    if (this.state.requestApproval) {
-      return h(MessageStatus, [WOOZY_STATES[this.state.status]]);
+export const Message = (props) => {
+  let backgroundColor = '#EEE';
+  if (props.isUser) {
+    if (!props.requestApproval || props.status === 'APPROVED') {
+      backgroundColor = 'lightgreen';
+    } else if (props.status === 'PENDING') {
+      backgroundColor = 'lightgoldenrodyellow';
+    } else if (props.status === 'REJECTED') {
+      backgroundColor = '#db4054';
     }
-    return null;
   }
-
-  render() {
-    let backgroundColor = '#EEE';
-    if (this.state.isUser) {
-      if (!this.state.requestApproval || this.state.status === 'APPROVED') {
-        backgroundColor = 'lightgreen';
-      } else if (this.state.status === 'PENDING') {
-        backgroundColor = 'lightgoldenrodyellow';
-      } else if (this.state.status === 'REJECTED') {
-        backgroundColor = '#db4054';
-      }
-    }
-    return h(
-      Container,
-      {
-        style: this.state.isUser
-          ? {
-              alignSelf: 'flex-end',
-              backgroundColor: backgroundColor,
-            }
-          : {
-              alignSelf: 'flex-start',
-              backgroundColor: backgroundColor,
-            },
-      },
-      [
-        h(Text, [
-          this.state.content,
-          !this.state.isUser &&
-          this.state.requestApproval &&
-          this.state.status === 'PENDING'
-            ? h(div, [
-                h(
-                  Button,
-                  {
-                    style: {
-                      backgroundColor: 'lightgreen',
-                      borderColor: '#888',
-                      marginRight: '5px',
-                      marginTop: '5px',
-                    },
-                    onClick: () => this.updateMessageStatus('APPROVED'),
+  return h(
+    Container,
+    {
+      style: props.isUser
+        ? {
+            alignSelf: 'flex-end',
+            backgroundColor: backgroundColor,
+          }
+        : {
+            alignSelf: 'flex-start',
+            backgroundColor: backgroundColor,
+          },
+    },
+    [
+      h(Text, [
+        props.content,
+        !props.isUser && props.requestApproval && props.status === 'PENDING'
+          ? h(div, [
+              h(
+                Button,
+                {
+                  style: {
+                    backgroundColor: 'lightgreen',
+                    borderColor: '#888',
+                    marginRight: '5px',
+                    marginTop: '5px',
                   },
-                  ['Approve'],
-                ),
-                h(
-                  Button,
-                  {
-                    style: {
-                      backgroundColor: '#db4054',
-                      borderColor: '#888',
-                      marginRight: '5px',
-                      marginTop: '5px',
-                    },
-                    onClick: () => this.updateMessageStatus('REJECTED'),
+                  onClick: () => this.updateMessageStatus('APPROVED'),
+                },
+                ['Approve'],
+              ),
+              h(
+                Button,
+                {
+                  style: {
+                    backgroundColor: '#db4054',
+                    borderColor: '#888',
+                    marginRight: '5px',
+                    marginTop: '5px',
                   },
-                  ['Deny'],
-                ),
-              ])
-            : this.renderMessageStatus(),
-        ]),
-      ],
-    );
-  }
-}
+                  onClick: () => this.updateMessageStatus('REJECTED'),
+                },
+                ['Deny'],
+              ),
+            ])
+          : messageStatus(props.requestApproval, props.status),
+      ]),
+    ],
+  );
+};

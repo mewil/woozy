@@ -1,136 +1,77 @@
 import { Component } from 'react';
 import { h, div } from 'react-hyperscript-helpers';
 import styled from 'styled-components';
-import { Message } from './message';
-import { Headline } from './contact-headline';
-import { MessageInput } from './message-input';
+import { connect } from 'react-redux';
 
-/*
-    senderID: this.props.senderID,
-    recipientID: this.propss.recipientID,
-    status: this.props.status, // Approved, Pending, Denied
-    requestApproval: this.props.requestApproval, // 
-    timestamp: this.props.timestamp,
-    content: this.props.content
- */
+import { getAuthUserId } from '@woozy/user';
+
+import { Message } from './message';
+import { fetchMessagesAction } from '../actions';
 
 const ConversationContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
+  padding: 12px;
+  margin: 70px 0px;
 `;
 
-const tempMessages = [
-  {
-    messageID: 100,
-    senderID: 1,
-    recipientID: 0,
-    timestamp: 'NOW',
-    content:
-      'Hey this message is from not the user and is requesting approval and still pending',
-    requestApproval: true,
-    status: 'PENDING',
-    isUser: false,
-  },
-  {
-    messageID: 200,
-    senderID: 1,
-    recipientID: 0,
-    timestamp: 'NOW',
-    content:
-      'Hey this message is from not the user and has already been accepted',
-    requestApproval: true,
-    status: 'APPROVED',
-    isUser: false,
-  },
-  {
-    messageID: 300,
-    senderID: 1,
-    recipientID: 0,
-    timestamp: 'NOW',
-    content: 'Hey this message is from the current user but still pending',
-    requestApproval: true,
-    status: 'PENDING',
-    isUser: true,
-  },
-  {
-    messageID: 500,
-    senderID: 1,
-    recipientID: 0,
-    timestamp: 'NOW',
-    content: 'Hey this message is from the current user and accepted',
-    requestApproval: true,
-    status: 'APPROVED',
-    isUser: true,
-  },
-  {
-    messageID: 400,
-    senderID: 1,
-    recipientID: 0,
-    timestamp: 'NOW',
-    content:
-      'Hey this message is from not the user and is requesting approval and rejected',
-    requestApproval: true,
-    status: 'REJECTED',
-    isUser: false,
-  },
-  {
-    messageID: 600,
-    senderID: 1,
-    recipientID: 0,
-    timestamp: 'NOW',
-    content: 'This is a message to overflow the div to see what happens',
-    requestApproval: true,
-    status: 'PENDING',
-    isUser: false,
-  },
-  {
-    messageID: 700,
-    senderID: 1,
-    recipientID: 0,
-    timestamp: 'NOW',
-    content: 'And another',
-    requestApproval: true,
-    status: 'PENDING',
-    isUser: false,
-  },
-  {
-    messageID: 800,
-    senderID: 1,
-    recipientID: 0,
-    timestamp: 'NOW',
-    content:
-      'Hey this message is not from the user and not requesting approval',
-    requestApproval: false,
-    status: 'PENDING',
-    isUser: false,
-  },
-];
-
 export class Conversation extends Component {
-  constructor(props) {
-    super(props);
+  componentDidMount() {
+    this.startUpdateInterval();
+    this.bottom.scrollIntoView();
+  }
 
-    this.state = {
-      // This should become props passed in using mapStateToProps. Needs to be replaced.
-      // contactName: this.props.contactName,
-      // contactID: this.props.contactName,
-      // isFriendContact: false,
-      // isAvoidedContact: false,
-      // isUser: false,
-      messages: tempMessages,
-    };
+  componentWillUnmount() {
+    this.stopUpdateInterval();
+  }
+
+  componentDidUpdate({ id: prevId }) {
+    const { id } = this.props;
+    if (prevId !== id) {
+      this.stopUpdateInterval();
+      this.startUpdateInterval();
+      this.bottom.scrollIntoView();
+    }
+  }
+
+  startUpdateInterval() {
+    const { fetchMessages } = this.props;
+    fetchMessages();
+    this.interval = setInterval(fetchMessages, 1000);
+  }
+
+  stopUpdateInterval() {
+    clearInterval(this.interval);
   }
 
   render() {
-    return div([
-      h(Headline, this.props),
-      h(
-        ConversationContainer,
-        this.state.messages.map((message) =>
-          h(Message, { ...message, key: message.messageID }),
-        ),
+    const { messages = [], loggedInUserId } = this.props;
+    return h(ConversationContainer, [
+      div({
+        ref: (bottom) => {
+          this.bottom = bottom;
+        },
+      }),
+      messages.map((message, key) =>
+        h(Message, {
+          ...message,
+          key,
+          isUser: loggedInUserId === message.fromUserId,
+        }),
       ),
-      h(MessageInput),
     ]);
   }
 }
+
+const mapStateToProps = (state) => ({
+  loggedInUserId: getAuthUserId(state),
+});
+
+const mapDispatchToProps = (dispatch, { id }) => ({
+  fetchMessages: () => dispatch(fetchMessagesAction({ conversationId: id })),
+});
+
+export const ConversationConn = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Conversation);

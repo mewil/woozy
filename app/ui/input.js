@@ -17,7 +17,6 @@ const Row = styled.div`
 
 const InputEl = styled.input`
   padding: 12px;
-  margin: 6px 0;
   font-family: ${({ theme }) => theme.primaryFont};
   font-size: 15px;
   line-height: 24px;
@@ -31,9 +30,7 @@ const InputEl = styled.input`
       return theme.lightGray;
     }};
   outline: none;
-  &:focus {
-    border-color: ${({ theme }) => theme.info};
-  }
+  border-color: ${({ theme }) => theme.info};
   &::placeholder {
     color: ${({ theme }) => theme.mediumGray};
   }
@@ -85,7 +82,6 @@ export const Input = ({
   required,
   innerRef,
   focused,
-  setFocus,
   containerStyles = {},
   icon,
   ...props
@@ -109,8 +105,6 @@ export const Input = ({
       h(Row, [
         h(InputEl, {
           innerRef,
-          onBlur: () => setFocus(false),
-          onFocus: () => setFocus(true),
           ...props,
         }),
       ]),

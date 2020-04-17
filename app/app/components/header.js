@@ -12,7 +12,7 @@ import { getAuthUserIsLoggedIn } from '@woozy/user';
 import { routes } from '../constants';
 
 const Wrapper = styled.div`
-  z-index: 1;
+  z-index: 90;
   padding: 15px 8%;
   position: fixed;
   top: 0;

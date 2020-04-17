@@ -13,7 +13,7 @@ import { packages } from './packages';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['messages'],
+  whitelist: ['theme'],
 };
 
 export const history = createBrowserHistory();
