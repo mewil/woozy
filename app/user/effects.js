@@ -42,9 +42,11 @@ export function* onFetchLoginUser({ payload: { username } }) {
 }
 
 export function* onFetchUpdateUser({ payload: { user } }) {
+  const { id } = user;
+  const url = `/api/user/${id}`;
   const result = yield call(apiFetch, {
     method: 'PUT',
-    url: '/api/user/',
+    url,
     body: {
       ...user,
     },

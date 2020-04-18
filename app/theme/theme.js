@@ -1,5 +1,5 @@
 export const theme = {
-  primaryFont: 'Open Sans',
+  primaryFont: 'Inter',
   headerFontSize: '50px',
   fontSize: '1.5em',
   primary: '#404040',
@@ -10,6 +10,6 @@ export const theme = {
   warning: '#FA9118',
   white: '#FFF',
   darkGray: '#2C2B3F',
-  mediumGray: '#85849B',
+  mediumGray: '#858595',
   lightGray: '#F0F2F7',
 };

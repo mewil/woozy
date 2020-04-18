@@ -6,6 +6,7 @@ import { enableBatching, batchDispatchMiddleware } from 'redux-batched-actions';
 import { END } from 'redux-saga';
 import { persistStore, persistCombineReducers } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import { map } from 'lodash';
 
 import { createReduxSagaMiddleware } from './middleware';
 import { packages } from './packages';
@@ -21,7 +22,7 @@ export const history = createBrowserHistory();
 const sagaMiddleware = createReduxSagaMiddleware();
 
 const prepSagas = (sagas = {}, options = []) =>
-  Object.values(sagas).map((saga) => spawn(saga, ...options));
+  map(sagas, (saga) => spawn(saga, ...options));
 
 const sagaCreator = (sagas) =>
   function* rootSaga(...options) {

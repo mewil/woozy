@@ -24,12 +24,14 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: flex-start;
   box-shadow: 1px 2px 4px lightgray;
+  justify-content: flex-end;
+  background-color: white;
 `;
 
 const NavContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  background-color: white;
 `;
 
 const HeaderNavLink = styled(NavLink)`

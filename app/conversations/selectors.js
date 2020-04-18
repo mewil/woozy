@@ -1,4 +1,4 @@
-import { get, filter, head, isUndefined } from 'lodash';
+import { get, filter, head, isUndefined, includes, map, values } from 'lodash';
 import { createSelector } from 'reselect';
 
 import { getNotLoggedInUsers, getUsers, getAuthUserId } from '@woozy/user';
@@ -12,15 +12,14 @@ export const getMyConversations = createSelector(
   getAuthUserId,
   (conversations, authId) =>
     filter(conversations, ({ participantIds }) =>
-      Object.values(participantIds).includes(authId),
+      includes(participantIds, authId),
     ),
 );
 
 export const getConversationParticipants = createSelector(
   getMyConversations,
   (conversations) =>
-    Object.values(conversations)
-      .map(({ participantIds }) => Object.values(participantIds))
+    map(conversations, ({ participantIds }) => values(participantIds))
       .reduce((prev, curr) => prev.concat(curr), [])
       .filter((item, _, arr) => arr.includes(item)),
 );
@@ -38,31 +37,24 @@ export const getConversationsWithUserAndMessages = createSelector(
   getUsers,
   getAuthUserId,
   (conversations, allMessages, users, authId) =>
-    Object.values(conversations)
-      .map((conversation) => {
-        const { id, participantIds, lastMessage } = conversation;
-        const messages = Object.values(allMessages)
-          .filter(
-            ({ conversationId, trustedFriendConversationId }) =>
-              id === conversationId || id === trustedFriendConversationId,
-          )
-          .sort(
-            (a, b) =>
-              new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
-          );
+    map(conversations, (conversation) => {
+      const { id, participantIds, lastMessage } = conversation;
+      const messages = filter(
+        allMessages,
+        ({ conversationId, trustedFriendConversationId }) =>
+          id === conversationId || id === trustedFriendConversationId,
+      ).sort(
+        (a, b) =>
+          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+      );
 
-        return {
-          ...conversation,
-          user: get(
-            users,
-            head(Object.values(participantIds).filter((p) => p !== authId)),
-          ),
-          messages,
-          lastMessage: isUndefined(head(messages))
-            ? lastMessage
-            : head(messages),
-        };
-      })
+      return {
+        ...conversation,
+        user: get(users, head(filter(participantIds, (p) => p !== authId))),
+        messages,
+        lastMessage: isUndefined(head(messages)) ? lastMessage : head(messages),
+      };
+    })
       .sort(
         (
           { lastMessage: a = { timestamp: new Date() } },

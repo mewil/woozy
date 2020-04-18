@@ -1,4 +1,4 @@
-import { get, compact } from 'lodash';
+import { get, compact, keys } from 'lodash';
 
 const use = (modules = []) => ({
   reducers: combine(modules, 'reducers'),
@@ -18,7 +18,7 @@ const combine = (modules = [], name = '') => {
     (merged, property) =>
       !property
         ? merged
-        : Object.keys(property).reduce(
+        : keys(property).reduce(
             (accumulator, key) => ({
               ...accumulator,
               [key]: accumulator[key] || property[key],
