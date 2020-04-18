@@ -10,6 +10,6 @@ export const theme = {
   warning: '#FA9118',
   white: '#FFF',
   darkGray: '#2C2B3F',
-  mediumGray: '#858595',
+  mediumGray: '#808090',
   lightGray: '#F0F2F7',
 };

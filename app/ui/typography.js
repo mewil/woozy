@@ -6,6 +6,15 @@ const Base = styled.div`
 `;
 
 export const Title = styled(Base)`
+  margin-top: 16px;
+  font-size: 22px;
+  line-height: 30px;
+  letter-spacing: 0.2px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.primary};
+`;
+
+export const Subtitle = styled(Base)`
   margin-bottom: 16px;
   font-size: 20px;
   line-height: 30px;
@@ -15,7 +24,7 @@ export const Title = styled(Base)`
 `;
 
 export const Body = styled(Base)`
-  font-size: 15px;
+  font-size: 16px;
   line-height: 24px;
   margin-bottom: 16px;
   font-weight: 400;

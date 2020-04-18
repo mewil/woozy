@@ -40,6 +40,10 @@ const devConfig = {
         test: /\.(png|jpg|jpeg|gif|woff|svg)$/,
         use: 'file-loader',
       },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
     ],
   },
   plugins: [
@@ -85,6 +89,10 @@ const buildConfig = {
         use: ['babel-loader'],
       },
       { test: /\.(png|jpg|jpeg|gif|woff|svg|otf)$/, use: 'file-loader' },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
     ],
   },
   plugins: [

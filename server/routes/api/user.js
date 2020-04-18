@@ -14,11 +14,7 @@ router.post('/', (req, res) => {
     User.findOneAndUpdate(
       { username },
       { username },
-      {
-        upsert: true,
-        new: true,
-        setDefaultsOnInsert: true,
-      },
+      { upsert: true, new: true, setDefaultsOnInsert: true },
       (err, user) => {
         if (err) {
           res.status(500).send({
@@ -56,14 +52,16 @@ router.get('/', (_req, res) => {
 
 // POST (PUT) request for added an avoided contact
 router.put('/:id', (req, res) => {
-  const { trustedFriendId, avoidingId } = req.body;
+  const {
+    trustedFriendId,
+    avoidingId,
+    startAvoidTimestamp,
+    endAvoidTimestamp,
+  } = req.body;
   User.findOneAndUpdate(
     { _id: req.params.id },
-    { trustedFriendId, avoidingId },
-    {
-      new: true,
-      setDefaultsOnInsert: true,
-    },
+    { trustedFriendId, avoidingId, startAvoidTimestamp, endAvoidTimestamp },
+    { new: true, setDefaultsOnInsert: true },
     (err, user) => {
       if (err) {
         res.status(500).send({

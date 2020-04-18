@@ -28,8 +28,7 @@
         "express": "^4.15.2",
         "mongoose": "^5.9.7",
         "mongoose-sanitizer-plugin": "^1.1.0",
-        "morgan": "^1.10.0",
-        "reselect": "^4.0.0"
+        "morgan": "^1.10.0"
     },
     "devDependencies": {
         "@babel/core": "^7.0.0",
@@ -47,7 +46,7 @@
         "connect-history-api-fallback": "^1.3.0",
         "connected-react-router": "^6.8.0",
         "copy-webpack-plugin": "^5.1.1",
-        "css-loader": "^3.4.2",
+        "css-loader": "^3.5.2",
         "es6-promise": "^4.1.0",
         "escape-string-regexp": "^2.0.0",
         "eslint": "^4.19.1",
@@ -72,8 +71,8 @@
         "prettier": "2.0.2",
         "prettier-eslint": "^9.0.1",
         "react": "^16.13",
+        "react-advanced-datetimerange-picker": "^1.0.11",
         "react-autocomplete": "^1.5.9",
-        "react-datetime": "^2.16.3",
         "react-dom": "^16",
         "react-file-download": "^0.3.4",
         "react-fontawesome": "^1.6.1",

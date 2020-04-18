@@ -1,6 +1,6 @@
 import { h } from 'react-hyperscript-helpers';
 import styled from 'styled-components';
-import { Title, Button } from '@woozy/ui';
+import { Subtitle, Button } from '@woozy/ui';
 
 const ConversationHeaderWrapper = styled.div`
   height: 70px;
@@ -38,6 +38,6 @@ const contactStatus = (isFriendContact, isAvoidedContact) => {
 
 export const Headline = ({ username, isFriendContact, isAvoidedContact }) =>
   h(ConversationHeaderWrapper, [
-    h(Title, username),
+    h(Subtitle, username),
     contactStatus(isFriendContact, isAvoidedContact),
   ]);

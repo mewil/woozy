@@ -3,47 +3,34 @@ import { h } from 'react-hyperscript-helpers';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { replace } from 'connected-react-router';
+import DateTimeRangeContainer from 'react-advanced-datetimerange-picker';
 import { map, filter, includes, values, isNull } from 'lodash';
-import Datetime from 'react-datetime';
+import moment from 'moment';
 
 import {
   fetchUpdateUserAction,
   getLoggedInUser,
   getNotLoggedInUsers,
 } from '@woozy/user';
-import { Title, Button } from '@woozy/ui';
+import { Title, Button, Body } from '@woozy/ui';
 
-const OuterContainer = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 50px;
-  align-items: center;
-`;
-const Container = styled.button`
-  display: flex;
-  margin: 20px;
-  width: 350px;
-  flex-direction: column;
-  padding: 50px;
+  padding-top: 10px;
+  padding-bottom: 40px;
   align-items: center;
 `;
 
-const SaveButton = styled(Container)`
-  width: 200px;
-  background-color: ${({ theme }) => theme.success};
-  padding: 10px;
-  height: 40px;
-`;
-
-const ScrollBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 50px;
-  height: 400px;
-  width: 400px;
-  overflow: auto;
-  align-items: center;
-  border: 1px solid black;
+const SectionContainer = styled.div`
+  display: block;
+  padding: 16px;
+  margin: 10px;
+  border: 1px solid ${({ theme }) => theme.mediumGray};
+  border-radius: 10px;
+  .activeNotifier {
+    padding-bottom: 0px;
+  }
 `;
 
 const Row = styled.div`
@@ -51,30 +38,10 @@ const Row = styled.div`
   flex-direction: row;
   align-items: center;
   padding: 5px;
-`;
-
-const ContactName = styled.div`
-  width: 150px;
-  font-size: 15px;
-  text-align: center;
-  padding: 10px;
-  align-items: center;
-  display: flex;
-`;
-
-const SmallHeader = styled.h4`
-  font-size: 25px;
-  align-items: center;
-  border: 1px solid black;
-  background-color: ${({ theme }) => theme.mediumGray};
-  padding: 15px;
-`;
-
-const TimingContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 50px;
-  align-items: center;
+  justify-content: space-between;
+  * {
+    margin: 0px 4px;
+  }
 `;
 
 export class SettingsPage extends Component {
@@ -101,6 +68,17 @@ export class SettingsPage extends Component {
     });
   }
 
+  updateTimes(start, end) {
+    const { loggedInUser, updateUser } = this.props;
+    const { avoidingId } = loggedInUser;
+    updateUser({
+      ...loggedInUser,
+      startAvoidTimestamp: start.toDate(),
+      endAvoidTimestamp: end.toDate(),
+      avoidingId: values(avoidingId),
+    });
+  }
+
   getTrustedFriendButton(trustedFriendId, id) {
     if (!trustedFriendId) {
       return h(
@@ -119,8 +97,13 @@ export class SettingsPage extends Component {
   }
 
   render() {
-    const { users, loggedInUser } = this.props;
-    const { trustedFriendId, avoidingId } = loggedInUser;
+    const { users, loggedInUser, closeSettings } = this.props;
+    const {
+      trustedFriendId,
+      avoidingId,
+      startAvoidTimestamp,
+      endAvoidTimestamp,
+    } = loggedInUser;
     const possibleUsersToBeAvoided = filter(
       users,
       ({ id }) => trustedFriendId !== id,
@@ -130,21 +113,21 @@ export class SettingsPage extends Component {
         ? !includes(avoidingId, id)
         : trustedFriendId === id,
     );
-    return h(OuterContainer, [
-      h(Title, 'Choose Trusted Friend'),
-      h(ScrollBox, [
+    return h(Container, [
+      h(Title, 'Choose Your Trusted Friend'),
+      h(SectionContainer, [
         map(possibleUsersToBeTrusted, ({ username, id }, key) =>
           h(Row, { key }, [
-            h(ContactName, username),
+            h(Body, username),
             this.getTrustedFriendButton(trustedFriendId, id),
           ]),
         ),
       ]),
       h(Title, 'Choose Your Avoided Contacts'),
-      h(ScrollBox, [
+      h(SectionContainer, [
         map(possibleUsersToBeAvoided, ({ username, id }, key) =>
           h(Row, { key }, [
-            h(ContactName, username),
+            h(Body, username),
             h(
               Button,
               { hollow: true, onClick: () => this.toggleAvoidingId(id) },
@@ -153,14 +136,53 @@ export class SettingsPage extends Component {
           ]),
         ),
       ]),
-      h(TimingContainer, [
-        h(Title, 'When will you be going out?'),
-        h(SmallHeader, 'Start time'),
-        h(Datetime, ''),
-        h(SmallHeader, 'End time'),
-        h(Datetime, ''),
-      ]),
-      h(SaveButton, 'Save Settings'),
+      h(Title, 'When Do You Want To Avoid These Contacts?'),
+      h(
+        SectionContainer,
+        {
+          style: {
+            flexDirection: 'row',
+            display: 'flex',
+          },
+        },
+        [
+          h(DateTimeRangeContainer, {
+            ranges: {
+              '12 Hours': [moment(), moment().add(12, 'hours')],
+              '24 Hours': [moment(), moment().add(1, 'days')],
+              '2 Days': [moment(), moment().add(2, 'days')],
+              '5 Days': [moment(), moment().add(5, 'days')],
+              '1 Week': [moment(), moment().add(7, 'days')],
+            },
+            local: {
+              format: 'YYYY-M-D h:mm A',
+            },
+            start: isNull(startAvoidTimestamp)
+              ? moment()
+              : moment(startAvoidTimestamp),
+            end: isNull(endAvoidTimestamp)
+              ? moment().add(1, 'days')
+              : moment(endAvoidTimestamp),
+            applyCallback: (start, end) => this.updateTimes(start, end),
+            autoApply: true,
+            standalone: true,
+            style: {
+              standaloneLayout: { display: 'flex', maxWidth: 'fit-content' },
+              fromDot: { display: 'none', paddingBottom: '8px' },
+              toDot: { display: 'none', paddingBottom: '8px' },
+            },
+          }),
+        ],
+      ),
+      h(
+        Button,
+        {
+          success: true,
+          onClick: () => closeSettings(),
+          style: { marginTop: '10px' },
+        },
+        'Save Settings',
+      ),
     ]);
   }
 }
@@ -172,7 +194,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   updateUser: (user) => dispatch(fetchUpdateUserAction({ user })),
-  closeModal: () => dispatch(replace('/')),
+  closeSettings: () => dispatch(replace('/')),
 });
 
 export const SettingsPageConn = connect(
