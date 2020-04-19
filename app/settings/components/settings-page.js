@@ -99,7 +99,7 @@ export class SettingsPage extends Component {
   render() {
     const { users, loggedInUser, closeSettings } = this.props;
     const {
-      trustedFriendId,
+      trustedFriendId = null,
       avoidingId,
       startAvoidTimestamp,
       endAvoidTimestamp,

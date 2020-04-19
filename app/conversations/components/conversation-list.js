@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import moment from 'moment';
 import { isEmpty, map } from 'lodash';
 
-import { Body, BodyFaded } from '@woozy/ui';
+import { Body, BodyFaded, Text } from '@woozy/ui';
 
 const Container = styled.div`
   background-color: ${({ selected }) => (selected ? '#EEE' : 'white')};
@@ -34,7 +34,7 @@ export const ConversationList = ({
         [
           h(Body, username),
           isEmpty(lastMessage)
-            ? null
+            ? h(Text, 'No Recent Messages')
             : h(BodyFaded, `${content} - ${moment(timestamp).fromNow()}`),
         ],
       );
