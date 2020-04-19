@@ -50,9 +50,6 @@ export function* onFetchCreateMessage({
   const { id, avoidingId, trustedFriendId } = yield select(getLoggedInUser);
   // get conversationId with trusted friend
   const userConversations = yield select(getMyConversations);
-  // let trustedFriendConversationId = filter(conversations, ({ participantIds }) =>
-  //   includes(participantIds, id) && includes(participantIds, trustedFriendId),
-  // )
   let trustedFriendConversationId = filter(
     userConversations,
     ({ participantIds }) => includes(participantIds, trustedFriendId),
@@ -62,7 +59,12 @@ export function* onFetchCreateMessage({
     Object.values(trustedFriendConversationId).length > 0
       ? Object.values(trustedFriendConversationId)[0].id
       : null;
-
+  // check if avoidingId is the same as toUserId
+  const woozyStatus =
+    Object.values(avoidingId).length > 0 &&
+    Object.values(avoidingId).includes(toUserId)
+      ? 'pending'
+      : 'not_woozy';
   const result = yield call(apiFetch, {
     url,
     method: 'POST',
@@ -71,8 +73,7 @@ export function* onFetchCreateMessage({
       conversationId,
       toUserId,
       fromUserId: id,
-      woozyStatus:
-        Object.values(avoidingId).length > 0 ? 'pending' : 'not_woozy',
+      woozyStatus,
       trustedFriendConversationId,
     },
   });

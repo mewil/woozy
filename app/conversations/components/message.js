@@ -1,4 +1,4 @@
-import { h, div } from 'react-hyperscript-helpers';
+import { h, div, br } from 'react-hyperscript-helpers';
 import styled from 'styled-components';
 
 import { Button } from '@woozy/ui';
@@ -26,10 +26,34 @@ const MessageStatus = styled.p`
   margin: 4px 0px;
 `;
 
-const messageStatus = (status) => h(MessageStatus, [WOOZY_STATES[status]]);
-
+// show status if this is a text you're trying to send to an avoided user or this is a text you've signed off on
+const renderMessageContent = (props) => {
+  // if logged in user has approved or denied, show status
+  const isReviewed =
+    props.woozyStatus !== WOOZY_STATES.NOT_WOOZY &&
+    props.isTrusted &&
+    !(props.toUserId === props.loggedInUserId);
+  // if message requested review, show status
+  const wantsReview =
+    props.isFromUser &&
+    props.isAvoided &&
+    props.woozyStatus !== WOOZY_STATES.NOT_WOOZY;
+  return h(div, [
+    isReviewed
+      ? [
+        props.fromUsername,
+        ' wants to message ',
+        props.toUsername,
+        ':',
+        h(br),
+        h(br),
+      ]
+      : null,
+    props.content,
+    isReviewed || wantsReview ? h(MessageStatus, [props.woozyStatus]) : null,
+  ]);
+};
 export const Message = (props) => {
-  console.log(props);
   // if this is a pending woozy message and the recipient is the trusted friend, requestApproval
   const requestApproval =
     props.woozyStatus === WOOZY_STATES.PENDING &&
@@ -62,60 +86,67 @@ export const Message = (props) => {
   }
   return renderMessage
     ? h(
-        Container,
-        {
-          style: props.isFromUser
-            ? {
-                alignSelf: 'flex-end',
-                backgroundColor: backgroundColor,
-              }
-            : {
-                alignSelf: 'flex-start',
-                backgroundColor: backgroundColor,
-              },
-        },
-        [
-          h(Text, [
-            props.content,
-            !props.isFromUser &&
+      Container,
+      {
+        style: props.isFromUser
+          ? {
+            alignSelf: 'flex-end',
+            backgroundColor: backgroundColor,
+          }
+          : {
+            alignSelf: 'flex-start',
+            backgroundColor: backgroundColor,
+          },
+      },
+      [
+        h(Text, [
+          !props.isFromUser &&
             requestApproval &&
             props.woozyStatus === WOOZY_STATES.PENDING
-              ? h(div, [
-                  h(
-                    Button,
-                    {
-                      style: {
-                        backgroundColor: 'lightgreen',
-                        borderColor: '#888',
-                        marginRight: '5px',
-                        marginTop: '5px',
-                      },
-                      onClick: () =>
-                        props.updateWoozyStatus(
-                          props.id,
-                          WOOZY_STATES.APPROVED,
-                        ),
-                    },
-                    ['Approve'],
-                  ),
-                  h(
-                    Button,
-                    {
-                      style: {
-                        backgroundColor: '#db4054',
-                        borderColor: '#888',
-                        marginRight: '5px',
-                        marginTop: '5px',
-                      },
-                      onClick: () =>
-                        props.updateWoozyStatus(props.id, WOOZY_STATES.DENIED),
-                    },
-                    ['Deny'],
-                  ),
-                ])
-              : messageStatus(props.woozyStatus),
-          ]),
-        ],
-      )
+            ? h(div, [
+              props.fromUsername,
+              ' wants to message ',
+              props.toUsername,
+              ':',
+              h(br),
+              h(br),
+              props.content,
+              h(br),
+              h(
+                Button,
+                {
+                  style: {
+                    backgroundColor: 'lightgreen',
+                    borderColor: '#888',
+                    marginRight: '5px',
+                    marginTop: '5px',
+                  },
+                  onClick: () =>
+                    props.updateWoozyStatus(
+                      props.id,
+                      WOOZY_STATES.APPROVED,
+                    ),
+                },
+                ['Approve'],
+              ),
+              h(
+                Button,
+                {
+                  style: {
+                    backgroundColor: '#db4054',
+                    borderColor: '#888',
+                    marginRight: '5px',
+                    marginTop: '5px',
+                  },
+                  onClick: () =>
+                    props.updateWoozyStatus(props.id, WOOZY_STATES.DENIED),
+                },
+                ['Deny'],
+              ),
+            ])
+            : renderMessageContent(props),
+        ]),
+      ],
+    )
     : null;
 };

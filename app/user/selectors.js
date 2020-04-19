@@ -1,4 +1,5 @@
 import { get, isNull, filter } from 'lodash';
+import { createSelector } from 'reselect';
 
 export const getUsers = (state) => get(state, 'users', {});
 
@@ -18,5 +19,12 @@ export const getIsFriendContact = (state, id) =>
 export const getIsAvoidedContact = (state, id) =>
   Object.values(get(getLoggedInUser(state), 'avoidingId', {})).includes(id);
 
-export const getUserFromId = (state, userId) =>
-  filter(getUsers(state), ({ id }) => id === userId);
+export const getUserIdsToUsernames = createSelector(getUsers, (users) =>
+  Object.values(users).reduce(
+    (results, m) => ({
+      ...results,
+      [m.id]: m.username,
+    }),
+    {},
+  ),
+);

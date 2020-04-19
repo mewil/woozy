@@ -3,7 +3,11 @@ import { h, div } from 'react-hyperscript-helpers';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 
-import { getAuthUserId, getIsAvoidedContact } from '@woozy/user';
+import {
+  getAuthUserId,
+  getIsAvoidedContact,
+  getUserIdsToUsernames,
+} from '@woozy/user';
 
 import { Message } from './message';
 import { fetchMessagesAction, updateWoozyStatusAction } from '../actions';
@@ -51,6 +55,7 @@ export class Conversation extends Component {
       user,
       isAvoided,
       updateWoozyStatus,
+      usernameMap,
     } = this.props;
     return h(ConversationContainer, [
       div({
@@ -71,6 +76,8 @@ export class Conversation extends Component {
           // if the logged in user is avoiding the other user
           isAvoided,
           updateWoozyStatus,
+          fromUsername: usernameMap[message.fromUserId],
+          toUsername: usernameMap[message.toUserId],
         }),
       ),
     ]);
@@ -80,6 +87,7 @@ export class Conversation extends Component {
 const mapStateToProps = (state, { user = { id: null } }) => ({
   loggedInUserId: getAuthUserId(state),
   isAvoided: getIsAvoidedContact(state, user.id),
+  usernameMap: getUserIdsToUsernames(state),
 });
 
 const mapDispatchToProps = (dispatch, { id }) => ({
