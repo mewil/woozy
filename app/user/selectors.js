@@ -13,7 +13,10 @@ export const getNotLoggedInUsers = (state) =>
   filter(getUsers(state), ({ id }) => id !== getAuthUserId(state));
 
 export const getIsFriendContact = (state, id) =>
-  Object.values(get(getLoggedInUser(state), 'avoidingId', {})).includes(id);
+  get(getLoggedInUser(state), 'trustedFriendId', null) === id;
 
 export const getIsAvoidedContact = (state, id) =>
-  get(getLoggedInUser(state), 'trustedFriendId', null) === id;
+  Object.values(get(getLoggedInUser(state), 'avoidingId', {})).includes(id);
+
+export const getUserFromId = (state, userId) =>
+  filter(getUsers(state), ({ id }) => id === userId);

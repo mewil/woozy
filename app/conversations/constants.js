@@ -1,5 +1,6 @@
 export const WOOZY_STATES = {
-  REJECTED: 'Rejected',
-  APPROVED: 'Approved',
-  PENDING: 'Pending',
+  NOT_WOOZY: 'not_woozy',
+  PENDING: 'pending',
+  APPROVED: 'approved',
+  DENIED: 'denied',
 };

@@ -37,3 +37,9 @@ export const addMessagesAction = ({ messages }) => ({
   type: ADD_MESSAGES,
   payload: { messages },
 });
+
+export const UPDATE_MESSAGE = 'conversations/UPDATE_MESSAGE';
+export const updateWoozyStatusAction = ({ messageId, newStatus }) => ({
+  type: UPDATE_MESSAGE,
+  payload: { messageId, newStatus },
+});

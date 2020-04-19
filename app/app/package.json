@@ -11,6 +11,7 @@
   "dependencies": {
     "@woozy/theme": "1.0.0",
     "@woozy/settings": "1.0.0",
-    "@woozy/user": "1.0.0"
+    "@woozy/user": "1.0.0",
+    "@woozy/conversations": "1.0.0"
   }
 }

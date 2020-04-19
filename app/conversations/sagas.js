@@ -5,12 +5,14 @@ import {
   FETCH_CREATE_CONVERSATION,
   FETCH_CREATE_MESSAGE,
   FETCH_MESSAGES,
+  UPDATE_MESSAGE,
 } from './actions';
 import {
   onFetchConversations,
   onFetchCreateConversation,
   onFetchCreateMessage,
   onFetchMessages,
+  onUpdateMessage,
 } from './effects';
 
 export function* fetchFeedSaga() {
@@ -27,4 +29,8 @@ export function* fetchCreateMessageSaga() {
 
 export function* fetchMessagesSaga() {
   yield takeEvery(FETCH_MESSAGES, onFetchMessages);
+}
+
+export function* updateMessageSaga() {
+  yield takeEvery(UPDATE_MESSAGE, onUpdateMessage);
 }
