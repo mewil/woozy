@@ -53,8 +53,15 @@ export function* onFetchCreateMessage({
   // let trustedFriendConversationId = filter(conversations, ({ participantIds }) =>
   //   includes(participantIds, id) && includes(participantIds, trustedFriendId),
   // )
-  let trustedFriendConversationId = filter(userConversations, ({ participantIds }) => includes(participantIds, trustedFriendId))
-  trustedFriendConversationId = trustedFriendConversationId && Object.values(trustedFriendConversationId).length > 0 ? Object.values(trustedFriendConversationId)[0].id : null;
+  let trustedFriendConversationId = filter(
+    userConversations,
+    ({ participantIds }) => includes(participantIds, trustedFriendId),
+  );
+  trustedFriendConversationId =
+    trustedFriendConversationId &&
+    Object.values(trustedFriendConversationId).length > 0
+      ? Object.values(trustedFriendConversationId)[0].id
+      : null;
 
   const result = yield call(apiFetch, {
     url,
@@ -64,7 +71,8 @@ export function* onFetchCreateMessage({
       conversationId,
       toUserId,
       fromUserId: id,
-      woozyStatus: Object.values(avoidingId).length > 0 ? 'pending' : 'not_woozy',
+      woozyStatus:
+        Object.values(avoidingId).length > 0 ? 'pending' : 'not_woozy',
       trustedFriendConversationId,
     },
   });
@@ -92,6 +100,6 @@ export function* onUpdateMessage({ payload: { messageId, newStatus } }) {
     method: 'PUT',
     body: {
       woozyStatus: newStatus,
-    }
+    },
   });
 }

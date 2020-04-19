@@ -45,7 +45,13 @@ export class Conversation extends Component {
   }
 
   render() {
-    const { messages = [], loggedInUserId, user, isAvoided, updateWoozyStatus } = this.props;
+    const {
+      messages = [],
+      loggedInUserId,
+      user,
+      isAvoided,
+      updateWoozyStatus,
+    } = this.props;
     return h(ConversationContainer, [
       div({
         ref: (bottom) => {
@@ -78,7 +84,8 @@ const mapStateToProps = (state, { user = { id: null } }) => ({
 
 const mapDispatchToProps = (dispatch, { id }) => ({
   fetchMessages: () => dispatch(fetchMessagesAction({ conversationId: id })),
-  updateWoozyStatus: (messageId, newStatus) => dispatch(updateWoozyStatusAction({ messageId, newStatus })),
+  updateWoozyStatus: (messageId, newStatus) =>
+    dispatch(updateWoozyStatusAction({ messageId, newStatus })),
 });
 
 export const ConversationConn = connect(
