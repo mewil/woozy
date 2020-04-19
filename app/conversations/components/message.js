@@ -41,13 +41,13 @@ const renderMessageContent = (props) => {
   return h(div, [
     isReviewed
       ? [
-        props.fromUsername,
-        ' wants to message ',
-        props.toUsername,
-        ':',
-        h(br),
-        h(br),
-      ]
+          props.fromUsername,
+          ' wants to message ',
+          props.toUsername,
+          ':',
+          h(br),
+          h(br),
+        ]
       : null,
     props.content,
     isReviewed || wantsReview ? h(MessageStatus, [props.woozyStatus]) : null,
@@ -86,67 +86,67 @@ export const Message = (props) => {
   }
   return renderMessage
     ? h(
-      Container,
-      {
-        style: props.isFromUser
-          ? {
-            alignSelf: 'flex-end',
-            backgroundColor: backgroundColor,
-          }
-          : {
-            alignSelf: 'flex-start',
-            backgroundColor: backgroundColor,
-          },
-      },
-      [
-        h(Text, [
-          !props.isFromUser &&
+        Container,
+        {
+          style: props.isFromUser
+            ? {
+                alignSelf: 'flex-end',
+                backgroundColor: backgroundColor,
+              }
+            : {
+                alignSelf: 'flex-start',
+                backgroundColor: backgroundColor,
+              },
+        },
+        [
+          h(Text, [
+            !props.isFromUser &&
             requestApproval &&
             props.woozyStatus === WOOZY_STATES.PENDING
-            ? h(div, [
-              props.fromUsername,
-              ' wants to message ',
-              props.toUsername,
-              ':',
-              h(br),
-              h(br),
-              props.content,
-              h(br),
-              h(
-                Button,
-                {
-                  style: {
-                    backgroundColor: 'lightgreen',
-                    borderColor: '#888',
-                    marginRight: '5px',
-                    marginTop: '5px',
-                  },
-                  onClick: () =>
-                    props.updateWoozyStatus(
-                      props.id,
-                      WOOZY_STATES.APPROVED,
-                    ),
-                },
-                ['Approve'],
-              ),
-              h(
-                Button,
-                {
-                  style: {
-                    backgroundColor: '#db4054',
-                    borderColor: '#888',
-                    marginRight: '5px',
-                    marginTop: '5px',
-                  },
-                  onClick: () =>
-                    props.updateWoozyStatus(props.id, WOOZY_STATES.DENIED),
-                },
-                ['Deny'],
-              ),
-            ])
-            : renderMessageContent(props),
-        ]),
-      ],
-    )
+              ? h(div, [
+                  props.fromUsername,
+                  ' wants to message ',
+                  props.toUsername,
+                  ':',
+                  h(br),
+                  h(br),
+                  props.content,
+                  h(br),
+                  h(
+                    Button,
+                    {
+                      style: {
+                        backgroundColor: 'lightgreen',
+                        borderColor: '#888',
+                        marginRight: '5px',
+                        marginTop: '5px',
+                      },
+                      onClick: () =>
+                        props.updateWoozyStatus(
+                          props.id,
+                          WOOZY_STATES.APPROVED,
+                        ),
+                    },
+                    ['Approve'],
+                  ),
+                  h(
+                    Button,
+                    {
+                      style: {
+                        backgroundColor: '#db4054',
+                        borderColor: '#888',
+                        marginRight: '5px',
+                        marginTop: '5px',
+                      },
+                      onClick: () =>
+                        props.updateWoozyStatus(props.id, WOOZY_STATES.DENIED),
+                    },
+                    ['Deny'],
+                  ),
+                ])
+              : renderMessageContent(props),
+          ]),
+        ],
+      )
     : null;
 };
