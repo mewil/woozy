@@ -17,7 +17,6 @@ const Row = styled.div`
 
 const InputEl = styled.input`
   padding: 12px;
-  font-family: ${({ theme }) => theme.primaryFont};
   font-size: 15px;
   line-height: 24px;
   color: ${({ theme }) => theme.darkGray};

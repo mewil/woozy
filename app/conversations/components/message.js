@@ -54,6 +54,7 @@ const renderMessageContent = (props) => {
   ]);
 };
 export const Message = (props) => {
+  const { avoidingId = {} } = props.otherUser;
   // if this is a pending woozy message and the recipient is the trusted friend, requestApproval
   const requestApproval =
     props.woozyStatus === WOOZY_STATES.PENDING &&
@@ -62,7 +63,7 @@ export const Message = (props) => {
   // don't render message if logged in user is avoided by otherUser and message is sent by other user and message is not approved
   let renderMessage = !(
     !props.isFromUser &&
-    Object.values(props.otherUser.avoidingId).includes(props.loggedInUserId) &&
+    Object.values(avoidingId).includes(props.loggedInUserId) &&
     (props.woozyStatus === WOOZY_STATES.PENDING ||
       props.woozyStatus === WOOZY_STATES.DENIED)
   );

@@ -20,6 +20,7 @@ import {
 import {
   fetchConversationsAction,
   fetchCreateConversationAction,
+  fetchMessagesAction,
 } from '../actions';
 
 const GlobalContainer = styled.div`
@@ -68,8 +69,9 @@ export class ConversationPage extends Component {
   }
 
   componentDidMount() {
-    const { fetchConversations } = this.props;
+    const { fetchConversations, fetchMessages } = this.props;
     fetchConversations();
+    fetchMessages();
     this.interval = setInterval(fetchConversations, 1000);
   }
 
@@ -150,6 +152,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchConversations: () => dispatch(fetchConversationsAction()),
+  fetchMessages: () => dispatch(fetchMessagesAction({ conversationId: '' })),
   fetchCreateConversation: (userId) =>
     dispatch(fetchCreateConversationAction({ userId })),
   closeModal: () => dispatch(replace('/')),

@@ -1,7 +1,9 @@
-import { get, filter, head, isUndefined, includes, map, values } from 'lodash';
+import { get, filter, head, includes, map, values, uniqBy } from 'lodash';
 import { createSelector } from 'reselect';
 
 import { getNotLoggedInUsers, getUsers, getAuthUserId } from '@woozy/user';
+
+import { WOOZY_STATES } from './constants';
 
 export const getConversations = (state) => get(state, 'conversations', {});
 
@@ -40,19 +42,41 @@ export const getConversationsWithUserAndMessages = createSelector(
     map(conversations, (conversation) => {
       const { id, participantIds, lastMessage } = conversation;
       const messages = filter(
-        allMessages,
-        ({ conversationId, trustedFriendConversationId }) =>
-          id === conversationId || id === trustedFriendConversationId,
+        uniqBy(
+          values(allMessages).concat([lastMessage]).filter(Boolean),
+          ({ id: messageId }) => messageId,
+        ),
+        ({
+          conversationId,
+          trustedFriendConversationId = null,
+          woozyStatus = null,
+        }) =>
+          (id === trustedFriendConversationId &&
+            woozyStatus === WOOZY_STATES.PENDING) ||
+          id === conversationId,
       ).sort(
         (a, b) =>
           new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+      );
+      const nonWoozyMessages = filter(
+        messages,
+        ({
+          woozyStatus = null,
+          trustedFriendConversationId = null,
+          fromUserId = null,
+        }) =>
+          woozyStatus === WOOZY_STATES.NOT_WOOZY ||
+          woozyStatus === WOOZY_STATES.APPROVED ||
+          (id === trustedFriendConversationId &&
+            woozyStatus === WOOZY_STATES.PENDING &&
+            fromUserId !== authId),
       );
 
       return {
         ...conversation,
         user: get(users, head(filter(participantIds, (p) => p !== authId))),
         messages,
-        lastMessage: isUndefined(head(messages)) ? lastMessage : head(messages),
+        lastMessage: head(nonWoozyMessages),
       };
     })
       .sort(

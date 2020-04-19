@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { h, div } from 'react-hyperscript-helpers';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
+import { get } from 'lodash';
 
 import {
   getAuthUserId,
@@ -72,7 +73,7 @@ export class Conversation extends Component {
           // just pass the whole other user idk
           otherUser: user,
           // if the logged in user is the trusted friend for otherUser
-          isTrusted: user.trustedFriendId === loggedInUserId,
+          isTrusted: get(user, 'trustedFriendId', null) === loggedInUserId,
           // if the logged in user is avoiding the other user
           isAvoided,
           updateWoozyStatus,

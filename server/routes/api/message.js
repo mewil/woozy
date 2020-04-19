@@ -4,6 +4,25 @@ const router = express.Router();
 const Message = require('../../db/message');
 
 // GET all messages given a conversation id
+router.get('/', (req, res) => {
+  Message.find()
+    .sort({ timestamp: -1 })
+    .exec((err, messages) => {
+      if (err) {
+        res.status(500).send({
+          status: false,
+          message: err,
+        });
+      }
+      res.send({
+        status: true,
+        message: 'successfully fetched messages',
+        data: messages,
+      });
+    });
+});
+
+// GET all messages given a conversation id
 router.get('/:conversation', (req, res) => {
   Message.find({
     $or: [
