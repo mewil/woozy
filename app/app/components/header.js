@@ -4,10 +4,11 @@ import { Helmet } from 'react-helmet';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { h } from 'react-hyperscript-helpers';
+import { isUndefined } from 'lodash';
 
 // eslint-disable-next-line no-unused-vars
 import { theme as globalTheme, devices, getTheme } from '@woozy/theme';
-import { getAuthUserIsLoggedIn } from '@woozy/user';
+import { getLoggedInUser } from '@woozy/user';
 
 import { routes } from '../constants';
 
@@ -54,23 +55,23 @@ const StyledNavLink = styled(NavLink)`
   border-radius: 5px;
   text-decoration: none;
   transition: all 0.3s;
-  text-transform: uppercase;
   &:first-child {
     margin: 0;
     margin-left: 15px;
   }
 `;
 
-const Header = ({ loggedIn }) =>
+const Header = ({ loggedInUser: { username } }) =>
   h(Fragment, [
     h(Helmet, [h('title', 'Woozy')]),
     h(Wrapper, [
       h(HeaderNavLink, { to: routes.HOME }, 'Woozy'),
       h(NavContainer, [
-        loggedIn
+        !isUndefined(username)
           ? h(Fragment, [
               h(StyledNavLink, { to: routes.SETTINGS }, 'SETTINGS'),
               h(StyledNavLink, { to: routes.NEW }, 'NEW'),
+              h(StyledNavLink, { to: routes.HOME }, username),
             ])
           : h(StyledNavLink, { to: routes.LOGIN }, 'LOGIN'),
       ]),
@@ -79,7 +80,7 @@ const Header = ({ loggedIn }) =>
 
 const mapStateToProps = (state) => ({
   theme: getTheme(state),
-  loggedIn: getAuthUserIsLoggedIn(state),
+  loggedInUser: getLoggedInUser(state),
 });
 
 export const HeaderConn = connect(mapStateToProps)(Header);
