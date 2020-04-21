@@ -43,14 +43,15 @@ export class Conversation extends Component {
     } = this.props;
     return h(ConversationContainer, [
       div({
+        key: -1,
         ref: (bottom) => {
           this.bottom = bottom;
         },
       }),
       messages.map((message, key) =>
         h(Message, {
-          ...message,
           key,
+          ...message,
           isFromUser: loggedInUserId === message.fromUserId,
           loggedInUserId,
           // just pass the whole other user idk

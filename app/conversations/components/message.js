@@ -36,7 +36,7 @@ const renderMessageContent = (props) => {
   // if message requested review, show status
   const wantsReview =
     props.isFromUser &&
-    props.isAvoided &&
+    // props.isAvoided &&
     props.woozyStatus !== WOOZY_STATES.NOT_WOOZY;
   return h(div, [
     isReviewed
@@ -63,12 +63,17 @@ export const Message = (props) => {
     props.isTrusted &&
     !(props.toUserId === props.loggedInUserId);
   // don't render message if logged in user is avoided by otherUser and message is sent by other user and message is not approved
-  let renderMessage = !(
-    !props.isFromUser &&
-    Object.values(avoidingId).includes(props.loggedInUserId) &&
-    (props.woozyStatus === WOOZY_STATES.PENDING ||
-      props.woozyStatus === WOOZY_STATES.DENIED)
-  );
+  let renderMessage =
+    !(
+      !props.isFromUser &&
+      Object.values(avoidingId).includes(props.loggedInUserId) &&
+      (props.woozyStatus === WOOZY_STATES.PENDING ||
+        props.woozyStatus === WOOZY_STATES.DENIED)
+    ) &&
+    !(
+      props.toUserId === props.loggedInUserId &&
+      props.woozyStatus === WOOZY_STATES.DENIED
+    );
   // also don't render message if sent by logged in user but other user is not the recipient
   renderMessage =
     renderMessage &&
@@ -77,8 +82,6 @@ export const Message = (props) => {
   // if woozy messages are sent by logged in user and other user is avoided, change background to show status
   if (props.isFromUser) {
     backgroundColor = 'lightgreen';
-  }
-  if (props.isFromUser && props.isAvoided) {
     if (props.woozyStatus === WOOZY_STATES.APPROVED) {
       backgroundColor = 'lightgreen';
     } else if (props.woozyStatus === WOOZY_STATES.PENDING) {

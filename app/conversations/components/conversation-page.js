@@ -130,8 +130,12 @@ export class ConversationPage extends Component {
         h(CenterContainer, [
           h(Headline, {
             username: get(currentConversation, 'user.username', ''),
-            isFriendContact,
-            isAvoidedContact,
+            isFriendContact: isFriendContact(
+              get(currentConversation, 'user.id'),
+            ),
+            isAvoidedContact: isAvoidedContact(
+              get(currentConversation, 'user.id'),
+            ),
           }),
           conversationId
             ? h(ConversationConn, {
@@ -153,8 +157,8 @@ const mapStateToProps = (state) => ({
   showNewConversationModal:
     get(state, 'router.location.pathname', '/') === '/new',
   theme: getTheme(state),
-  isFriendContact: getIsFriendContact(state),
-  isAvoidedContact: getIsAvoidedContact(state),
+  isFriendContact: (id) => getIsFriendContact(state, id),
+  isAvoidedContact: (id) => getIsAvoidedContact(state, id),
   authId: getAuthUserId(state),
 });
 

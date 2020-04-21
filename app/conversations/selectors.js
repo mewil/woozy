@@ -59,7 +59,7 @@ export const getConversationsWithUserAndMessages = createSelector(
           toUserId = null,
         }) =>
           (id === trustedFriendConversationId &&
-            woozyStatus === WOOZY_STATES.PENDING) ||
+            woozyStatus !== WOOZY_STATES.NOT_WOOZY) ||
           (id === conversationId &&
             !(toUserId === authId && woozyStatus === WOOZY_STATES.PENDING)),
       ).sort(
