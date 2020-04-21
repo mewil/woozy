@@ -6,7 +6,12 @@ import { get, head, isEmpty } from 'lodash';
 import { replace } from 'connected-react-router';
 
 import { getTheme } from '@woozy/theme';
-import { getIsFriendContact, getIsAvoidedContact } from '@woozy/user';
+import {
+  getIsFriendContact,
+  getIsAvoidedContact,
+  getAuthUserId,
+  fetchUsersAction,
+} from '@woozy/user';
 
 import { ConversationList } from './conversation-list';
 import { ConversationConn } from './conversation';
@@ -20,7 +25,6 @@ import {
 import {
   fetchConversationsAction,
   fetchCreateConversationAction,
-  fetchMessagesAction,
 } from '../actions';
 
 const GlobalContainer = styled.div`
@@ -69,10 +73,11 @@ export class ConversationPage extends Component {
   }
 
   componentDidMount() {
-    const { fetchConversations, fetchMessages } = this.props;
+    const { fetchConversations, fetchUsers } = this.props;
     fetchConversations();
-    fetchMessages();
     this.interval = setInterval(fetchConversations, 1000);
+    fetchUsers();
+    this.interval = setInterval(fetchUsers, 1000);
   }
 
   componentWillUnmount() {
@@ -95,6 +100,7 @@ export class ConversationPage extends Component {
       fetchCreateConversation,
       isFriendContact,
       isAvoidedContact,
+      authId,
     } = this.props;
     const {
       conversationId = get(head(Object.values(conversations)), 'id', null),
@@ -114,6 +120,7 @@ export class ConversationPage extends Component {
         h(LeftContainer, { hasConversations: !isEmpty(conversations) }, [
           !isEmpty(conversations)
             ? h(ConversationList, {
+                authId,
                 conversations,
                 conversationId,
                 setConversationId: (id) => this.setConversationId(id),
@@ -148,11 +155,12 @@ const mapStateToProps = (state) => ({
   theme: getTheme(state),
   isFriendContact: getIsFriendContact(state),
   isAvoidedContact: getIsAvoidedContact(state),
+  authId: getAuthUserId(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetchConversations: () => dispatch(fetchConversationsAction()),
-  fetchMessages: () => dispatch(fetchMessagesAction({ conversationId: '' })),
+  fetchUsers: () => dispatch(fetchUsersAction()),
   fetchCreateConversation: (userId) =>
     dispatch(fetchCreateConversationAction({ userId })),
   closeModal: () => dispatch(replace('/')),

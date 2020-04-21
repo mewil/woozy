@@ -26,12 +26,6 @@ export const fetchCreateMessageAction = ({
   payload: { message, conversationId, toUserId },
 });
 
-export const FETCH_MESSAGES = 'conversations/FETCH_MESSAGES';
-export const fetchMessagesAction = ({ conversationId }) => ({
-  type: FETCH_MESSAGES,
-  payload: { conversationId },
-});
-
 export const ADD_MESSAGES = 'conversations/ADD_MESSAGES';
 export const addMessagesAction = ({ messages }) => ({
   type: ADD_MESSAGES,

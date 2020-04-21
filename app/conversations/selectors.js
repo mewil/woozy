@@ -1,4 +1,13 @@
-import { get, filter, head, includes, map, values, uniqBy } from 'lodash';
+import {
+  get,
+  filter,
+  head,
+  includes,
+  map,
+  values,
+  uniqBy,
+  isUndefined,
+} from 'lodash';
 import { createSelector } from 'reselect';
 
 import { getNotLoggedInUsers, getUsers, getAuthUserId } from '@woozy/user';
@@ -40,51 +49,39 @@ export const getConversationsWithUserAndMessages = createSelector(
   getAuthUserId,
   (conversations, allMessages, users, authId) =>
     map(conversations, (conversation) => {
-      const { id, participantIds, lastMessage } = conversation;
+      const { id, participantIds } = conversation;
       const messages = filter(
-        uniqBy(
-          values(allMessages).concat([lastMessage]).filter(Boolean),
-          ({ id: messageId }) => messageId,
-        ),
+        uniqBy(values(allMessages), ({ id: messageId }) => messageId),
         ({
           conversationId,
           trustedFriendConversationId = null,
           woozyStatus = null,
+          toUserId = null,
         }) =>
           (id === trustedFriendConversationId &&
             woozyStatus === WOOZY_STATES.PENDING) ||
-          id === conversationId,
+          (id === conversationId &&
+            !(toUserId === authId && woozyStatus === WOOZY_STATES.PENDING)),
       ).sort(
         (a, b) =>
           new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
-      );
-      const nonWoozyMessages = filter(
-        messages,
-        ({
-          woozyStatus = null,
-          trustedFriendConversationId = null,
-          fromUserId = null,
-        }) =>
-          woozyStatus === WOOZY_STATES.NOT_WOOZY ||
-          woozyStatus === WOOZY_STATES.APPROVED ||
-          (id === trustedFriendConversationId &&
-            woozyStatus === WOOZY_STATES.PENDING &&
-            fromUserId !== authId),
       );
 
       return {
         ...conversation,
         user: get(users, head(filter(participantIds, (p) => p !== authId))),
         messages,
-        lastMessage: head(nonWoozyMessages),
       };
     })
-      .sort(
-        (
-          { lastMessage: a = { timestamp: new Date() } },
-          { lastMessage: b = { timestamp: new Date() } },
-        ) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
-      )
+      .sort(({ messages: aMessages }, { messages: bMessages }) => {
+        const lastATimestamp = isUndefined(head(aMessages))
+          ? new Date()
+          : new Date(head(aMessages).timestamp);
+        const lastBTimestamp = isUndefined(head(bMessages))
+          ? new Date()
+          : new Date(head(bMessages).timestamp);
+        return lastATimestamp.getTime() - lastBTimestamp.getTime();
+      })
       .reduce(
         (results, m) => ({
           ...results,

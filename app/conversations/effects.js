@@ -1,16 +1,12 @@
 import { call, put, select } from 'redux-saga/effects';
 import { batchActions } from 'redux-batched-actions';
-import { get, filter, includes } from 'lodash';
+import { get, filter, includes, map, values, isEmpty } from 'lodash';
 
 import { apiFetch, responseHasError } from '@woozy/fetch';
 import { getAuthUserId, getLoggedInUser } from '@woozy/user';
 import { getMyConversations } from '@woozy/conversations';
 
-import {
-  addConversationsAction,
-  fetchMessagesAction,
-  addMessagesAction,
-} from './actions';
+import { addConversationsAction, addMessagesAction } from './actions';
 import { replace } from 'connected-react-router';
 
 export function* onFetchConversations() {
@@ -19,8 +15,23 @@ export function* onFetchConversations() {
 
   if (responseHasError(result)) return;
 
-  const conversations = get(result, 'data', []);
-  yield put(batchActions([addConversationsAction({ conversations })]));
+  const conversations = get(result, 'data', {});
+
+  const extractedConversations = map(
+    conversations,
+    ({ messages, ...rest }) => rest,
+  );
+
+  const newMessages = filter(
+    values(map(conversations, ({ messages }) => values(messages))),
+    (m) => !isEmpty(m),
+  ).flat();
+  yield put(
+    batchActions([
+      addConversationsAction({ conversations: extractedConversations }),
+      addMessagesAction({ messages: newMessages }),
+    ]),
+  );
 }
 
 export function* onFetchCreateConversation({ payload: { userId } }) {
@@ -65,7 +76,8 @@ export function* onFetchCreateMessage({
     Object.values(avoidingId).includes(toUserId)
       ? 'pending'
       : 'not_woozy';
-  const result = yield call(apiFetch, {
+
+  yield call(apiFetch, {
     url,
     method: 'POST',
     body: {
@@ -77,21 +89,6 @@ export function* onFetchCreateMessage({
       trustedFriendConversationId,
     },
   });
-
-  if (responseHasError(result)) return;
-  yield put(fetchMessagesAction({ conversationId }));
-}
-
-export function* onFetchMessages({ payload: { conversationId } }) {
-  const url = `/api/message/${conversationId}`;
-  const result = yield call(apiFetch, {
-    url,
-    method: 'GET',
-  });
-
-  if (responseHasError(result)) return;
-  const messages = get(result, 'data', {});
-  yield put(addMessagesAction({ messages }));
 }
 
 export function* onUpdateMessage({ payload: { messageId, newStatus } }) {

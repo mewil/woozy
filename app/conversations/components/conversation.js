@@ -11,7 +11,7 @@ import {
 } from '@woozy/user';
 
 import { Message } from './message';
-import { fetchMessagesAction, updateWoozyStatusAction } from '../actions';
+import { updateWoozyStatusAction } from '../actions';
 
 const ConversationContainer = styled.div`
   display: flex;
@@ -22,31 +22,14 @@ const ConversationContainer = styled.div`
 
 export class Conversation extends Component {
   componentDidMount() {
-    this.startUpdateInterval();
     this.bottom.scrollIntoView();
-  }
-
-  componentWillUnmount() {
-    this.stopUpdateInterval();
   }
 
   componentDidUpdate({ id: prevId }) {
     const { id } = this.props;
     if (prevId !== id) {
-      this.stopUpdateInterval();
-      this.startUpdateInterval();
       this.bottom.scrollIntoView();
     }
-  }
-
-  startUpdateInterval() {
-    const { fetchMessages } = this.props;
-    fetchMessages();
-    this.interval = setInterval(fetchMessages, 1000);
-  }
-
-  stopUpdateInterval() {
-    clearInterval(this.interval);
   }
 
   render() {
@@ -91,8 +74,7 @@ const mapStateToProps = (state, { user = { id: null } }) => ({
   usernameMap: getUserIdsToUsernames(state),
 });
 
-const mapDispatchToProps = (dispatch, { id }) => ({
-  fetchMessages: () => dispatch(fetchMessagesAction({ conversationId: id })),
+const mapDispatchToProps = (dispatch) => ({
   updateWoozyStatus: (messageId, newStatus) =>
     dispatch(updateWoozyStatusAction({ messageId, newStatus })),
 });
