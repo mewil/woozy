@@ -1,5 +1,7 @@
 # Woozy
 
+Project for University of Michigan EECS 480 by Shameek Ray, Rosie Wilson, Aditi Krishnan, Sahil Patel, Michael Wilson, and Sydnie Bodzianowski.
+
 [![Build Status](https://travis-ci.org/mewil/woozy.svg?branch=master)](https://travis-ci.org/mewil/woozy)
 
 ## Setup
