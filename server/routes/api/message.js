@@ -7,6 +7,7 @@ const Message = require('../../db/message');
 router.get('/', (req, res) => {
   Message.find()
     .sort({ timestamp: -1 })
+    .limit(25)
     .exec((err, messages) => {
       if (err) {
         res.status(500).send({

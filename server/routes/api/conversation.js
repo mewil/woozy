@@ -29,12 +29,10 @@ router.get('/', (_req, res) => {
             },
           },
           { $sort: { timestamp: -1 } },
-          { $limit: 1 },
+          { $limit: 25 },
         ],
       },
     },
-    { $addFields: { lastMessage: { $arrayElemAt: ['$messages', 0] } } },
-    { $unset: 'messages' },
   ]).exec((err, conversations) => {
     if (err) {
       res.status(500).send({

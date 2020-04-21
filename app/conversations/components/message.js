@@ -53,8 +53,10 @@ const renderMessageContent = (props) => {
     isReviewed || wantsReview ? h(MessageStatus, [props.woozyStatus]) : null,
   ]);
 };
+
 export const Message = (props) => {
-  const { avoidingId = {} } = props.otherUser;
+  const { otherUser = {} } = props;
+  const { avoidingId = {} } = otherUser;
   // if this is a pending woozy message and the recipient is the trusted friend, requestApproval
   const requestApproval =
     props.woozyStatus === WOOZY_STATES.PENDING &&
